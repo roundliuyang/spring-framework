@@ -27,6 +27,10 @@ import java.nio.channels.ReadableByteChannel;
 import org.springframework.lang.Nullable;
 
 /**
+ * Resource 为 Spring 框架所有资源的抽象和访问接口，它继承org.springframework.core.io.InputStreamSource接口。作为
+ * 所有资源的统一抽象，Resource 定义了一些通用的方法，由子类 AbstractResource  提供的默认实现。
+ *
+ * 如果我们想要实现自定义的 Resource ，记住不要实现 Resource 接口，而应该继承 AbstractResource 抽象类，然后根据当前的具体资源特性覆盖相应的方法即可。
  * Interface for a resource descriptor that abstracts from the actual
  * type of underlying resource, such as a file or class path resource.
  *
