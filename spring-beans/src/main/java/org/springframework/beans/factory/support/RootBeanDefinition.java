@@ -33,6 +33,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ * 如果配置文件中定义了父 <bean> 和 子 <bean> ，则父 <bean> 用 RootBeanDefinition 表示，
+ * 子 <bean> 用 ChildBeanDefinition 表示，而没有父 <bean> 的就使用RootBeanDefinition 表示。
+ *
  * A root bean definition represents the merged bean definition that backs
  * a specific bean in a Spring BeanFactory at runtime. It might have been created
  * from multiple original bean definitions that inherit from each other,

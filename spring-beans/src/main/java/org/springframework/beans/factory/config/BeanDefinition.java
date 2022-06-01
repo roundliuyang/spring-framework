@@ -22,6 +22,9 @@ import org.springframework.core.AttributeAccessor;
 import org.springframework.lang.Nullable;
 
 /**
+ * 它描述了一个 Bean 实例的定义，包括属性值、构造方法值和继承自它的类的更多信息
+ * 虽然接口方法比较多，但是是不是一下子和我们平时使用 <bean> 标签的属性，能够对应上落
+ *
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.
