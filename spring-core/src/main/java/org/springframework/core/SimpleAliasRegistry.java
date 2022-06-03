@@ -46,12 +46,16 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	/** Map from alias to canonical name */
 	private final Map<String, String> aliasMap = new ConcurrentHashMap<>(16);
 
-
+	/** Map from alias to canonical name. */
+	// key: alias
+	// value: beanName
 	@Override
 	public void registerAlias(String name, String alias) {
+		// 校验 name 、 alias
 		Assert.hasText(name, "'name' must not be empty");
 		Assert.hasText(alias, "'alias' must not be empty");
 		synchronized (this.aliasMap) {
+			// name == alias 则去掉alias
 			if (alias.equals(name)) {
 				this.aliasMap.remove(alias);
 				if (logger.isDebugEnabled()) {
@@ -59,12 +63,16 @@ public class SimpleAliasRegistry implements AliasRegistry {
 				}
 			}
 			else {
+				// 获取 alias 已注册的 beanName
 				String registeredName = this.aliasMap.get(alias);
+				// 已存在
 				if (registeredName != null) {
+					// 相同，则 return ，无需重复注册
 					if (registeredName.equals(name)) {
 						// An existing alias - no need to re-register
 						return;
 					}
+					// 不允许覆盖，则抛出 IllegalStateException 异常
 					if (!allowAliasOverriding()) {
 						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" +
 								name + "': It is already registered for name '" + registeredName + "'.");
@@ -74,7 +82,9 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
+				// 校验，是否存在循环指向
 				checkForAliasCircle(name, alias);
+				// 注册 alias
 				this.aliasMap.put(alias, name);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Alias definition '" + alias + "' registered for name '" + name + "'");
