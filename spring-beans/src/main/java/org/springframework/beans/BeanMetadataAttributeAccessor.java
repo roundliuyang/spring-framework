@@ -50,10 +50,12 @@ public class BeanMetadataAttributeAccessor extends AttributeAccessorSupport impl
 
 
 	/**
+	 * 添加 BeanMetadataAttribute 加入到 AbstractBeanDefinition 中
 	 * Add the given BeanMetadataAttribute to this accessor's set of attributes.
 	 * @param attribute the BeanMetadataAttribute object to register
 	 */
 	public void addMetadataAttribute(BeanMetadataAttribute attribute) {
+		// 委托 AttributeAccessorSupport 实现
 		super.setAttribute(attribute.getName(), attribute);
 	}
 
