@@ -64,11 +64,19 @@ public abstract class BeanFactoryUtils {
 	}
 
 	/**
+	 * 去除 FactoryBean 的修饰符 &
+	 * 如果 name 以 “&” 为前缀，那么会去掉该 "&" 。
+	 * 例如，name = "&studentService" ，则会是 name = "studentService"。
+	 *
 	 * Return the actual bean name, stripping out the factory dereference
 	 * prefix (if any, also stripping repeated factory prefixes if found).
 	 * @param name the name of the bean
 	 * @return the transformed name
 	 * @see BeanFactory#FACTORY_BEAN_PREFIX
+	 */
+	/**
+	 * 小知识补充。假设配置了一个 FactoryBean 的名字为 "abc" ，那么获取 FactoryBean 创建的 Bean 时，使用 "abc" ，
+	 * 如果获取 FactoryBean 本身，使用 "$abc" 。另外，&定义在 BeanFactory.FACTORY_BEAN_PREFIX = "&" 上。
 	 */
 	public static String transformedBeanName(String name) {
 		Assert.notNull(name, "'name' must not be null");
