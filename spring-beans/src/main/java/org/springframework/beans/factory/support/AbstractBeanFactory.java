@@ -367,22 +367,28 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw ex;
 						}
 					});
+					// 加载了单例 bean 后，调用 #getObjectForBeanInstance(Object beanInstance, String name, String beanName, RootBeanDefinition mbd) 方法，从 bean 实例中获取对象。
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
-				else if (mbd.isPrototype()) {         // 原型模式
+				else if (mbd.isPrototype()) {         // 原型模式    原型模式的初始化过程很简单：直接创建一个新的 Bean 的实例就可以了
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
 					try {
+						// <1> 加载前置处理
 						beforePrototypeCreation(beanName);
+						// <2> 创建 Bean 对象
 						prototypeInstance = createBean(beanName, mbd, args);
 					}
 					finally {
+						// <3> 加载后缀处理
 						afterPrototypeCreation(beanName);
 					}
+					// <4> 从 Bean 实例中获取对象
 					bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
 				}
-
+				// 其他作用域
+				// 核心流程和原型模式一样，只不过获取 bean 实例是由 Scope#get(String name, ObjectFactory<?> objectFactory) 方法来实现。
 				else {
 					// 从指定的 scope 下创建 bean
 					String scopeName = mbd.getScope();
@@ -394,15 +400,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
 					}
 					try {
+						// 从指定的 scope 下创建 bean
 						Object scopedInstance = scope.get(beanName, () -> {
+							// 加载前置处理
 							beforePrototypeCreation(beanName);
 							try {
+								//  创建 Bean 对象
 								return createBean(beanName, mbd, args);
 							}
 							finally {
+								// 加载后置处理
 								afterPrototypeCreation(beanName);
 							}
 						});
+						// 从 Bean 实例中获取对象
 						bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
 					}
 					catch (IllegalStateException ex) {
