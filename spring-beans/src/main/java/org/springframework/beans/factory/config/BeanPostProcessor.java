@@ -26,6 +26,15 @@ import org.springframework.lang.Nullable;
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
  *
+ *
+ *
+ * BeanPostProcessor 可以理解为是 Spring 的一个工厂钩子（其实 Spring 提供一系列的钩子，如 Aware 、InitializingBean、DisposableBean），
+ * 它是 Spring 提供的对象实例化阶段强有力的扩展点，允许 Spring 在实例化 bean 阶段对其进行定制化修改，比较常见的使用场景是处理标记接口实现类或者为当前对象提供代理实现（例如 AOP）。
+ * 一般普通的 BeanFactory 是不支持自动注册 BeanPostProcessor 的，需要我们手动调用 #addBeanPostProcessor(BeanPostProcessor beanPostProcessor) 方法进行注册。
+ * 注册后的 BeanPostProcessor 适用于所有该 BeanFactory 创建的 bean，但是 ApplicationContext 可以在其 bean 定义中自动检测所有的 BeanPostProcessor 并自动完成注册，同时将他们应用到随后创建的任何 Bean 中。
+ * #postProcessBeforeInitialization(Object bean, String beanName) 和 #postProcessAfterInitialization(Object bean, String beanName) 两个方法，
+ * 都接收一个 Object 类型的 bean ，一个 String 类型的 beanName ，其中 bean 是已经实例化了的 instanceBean ，能拿到这个你是不是可以对它为所欲为了？
+ * 这两个方法是初始化 bean 的前后置处理器，他们应用 #invokeInitMethods(String beanName, final Object bean, RootBeanDefinition mbd) 方法的前后
  * <p>ApplicationContexts can autodetect BeanPostProcessor beans in their
  * bean definitions and apply them to any beans subsequently created.
  * Plain bean factories allow for programmatic registration of post-processors,
