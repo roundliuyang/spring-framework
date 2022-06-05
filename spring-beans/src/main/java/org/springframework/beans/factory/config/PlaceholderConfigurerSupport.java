@@ -209,7 +209,12 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 		this.beanFactory = beanFactory;
 	}
 
-
+	/**
+	 * 然后，得到 String 解析器的实例 valueResolver 后，则会调用 #doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
+	 * StringValueResolver valueResolver) 方法，来进行真值的替换操作。该方法在父类 PlaceholderConfigurerSupport 中实现
+	 * @param beanFactoryToProcess
+	 * @param valueResolver
+	 */
 	protected void doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
 			StringValueResolver valueResolver) {
 

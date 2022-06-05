@@ -28,6 +28,10 @@ import org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * PropertyPlaceholderConfigurer 允许我们用 Properties 文件中的属性，来定义应用上下文（配置文件或者注解）。
+ * 什么意思，就是说我们在 XML 配置文件（或者其他方式，如注解方式）中使用占位符的方式来定义一些资源，并将这些占位符所代表的资源配置到 Properties 中，
+ * 这样只需要对 Properties 文件进行修改即可，这个特性非常，在后面来介绍一种我们在项目中经常用到场景。
+ *
  * {@link PlaceholderConfigurerSupport} subclass that resolves ${...} placeholders against
  * {@link #setLocation local} {@link #setProperties properties} and/or system properties
  * and environment variables.
@@ -208,12 +212,16 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 	@Override
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
 			throws BeansException {
-
+		// <1> 创建 StringValueResolver 对象
 		StringValueResolver valueResolver = new PlaceholderResolvingStringValueResolver(props);
+		// <2> 处理
 		doProcessProperties(beanFactoryToProcess, valueResolver);
 	}
 
-
+	/**
+	 * StringValueResolver 为一个解析 String 类型值的策略接口，该接口提供了 #resolveStringValue(String strVal) 方法，
+	 * 用于解析 String 值。PlaceholderResolvingStringValueResolver 为其一个解析策略
+	 */
 	private class PlaceholderResolvingStringValueResolver implements StringValueResolver {
 
 		private final PropertyPlaceholderHelper helper;
