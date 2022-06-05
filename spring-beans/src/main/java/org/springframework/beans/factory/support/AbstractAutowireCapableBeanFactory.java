@@ -1849,6 +1849,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		// <3> 激活用户自定义的 init 方法
 		try {
+			/*
+				上面提到 bean 初始化阶段（ #initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd) 方法），
+				Spring 容器会主动检查当前 bean 是否已经实现了 InitializingBean 接口，如果实现了，则会掉用其 #afterPropertiesSet() 方法。这个主动检查、
+				调用的动作是由 #invokeInitMethods(String beanName, final Object bean, @Nullable RootBeanDefinition mbd) 方法来完成的。代码如下：
+			 */
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
@@ -1929,11 +1934,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (mbd != null && bean.getClass() != NullBean.class) {
+			// 判断是否指定了 init-method()，
+			// 如果指定了 init-method()，则再调用制定的init-method
 			String initMethodName = mbd.getInitMethodName();
 			if (StringUtils.hasLength(initMethodName) &&
 					!(isInitializingBean && "afterPropertiesSet".equals(initMethodName)) &&
 					!mbd.isExternallyManagedInitMethod(initMethodName)) {
 				// <2> 激活用户自定义的初始化方法
+				// 利用反射机制执行
 				invokeCustomInitMethod(beanName, bean, mbd);
 			}
 		}
