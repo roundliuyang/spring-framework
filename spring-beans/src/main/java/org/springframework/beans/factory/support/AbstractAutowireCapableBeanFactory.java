@@ -1317,6 +1317,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, this);
 			}
 			// 封装 BeanWrapperImpl  并完成初始化
+			// beanInstance 就是我们实例出来的 bean 实例，通过构造一个 BeanWrapper 实例对象进行包裹
 			BeanWrapper bw = new BeanWrapperImpl(beanInstance);
 			initBeanWrapper(bw);
 			return bw;
