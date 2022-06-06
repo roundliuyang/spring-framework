@@ -19,6 +19,7 @@ package org.springframework.core.convert.converter;
 import org.springframework.lang.Nullable;
 
 /**
+ * Converter 是一个将 <S> 类型的源对象转换为 <T> 类型的目标对象的转换器。该接口是线程安全的，所以可以共享。代码如下:
  * A converter converts a source object of type {@code S} to a target of type {@code T}.
  *
  * <p>Implementations of this interface are thread-safe and can be shared.

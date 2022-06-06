@@ -50,6 +50,7 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * DataBinder 主要用于参数绑定（熟悉 Spring MVC 的都应该知道这个类）
  * Binder that allows for setting property values onto a target object,
  * including support for validation and binding result analysis.
  * The binding process can be customized through specifying allowed fields,
