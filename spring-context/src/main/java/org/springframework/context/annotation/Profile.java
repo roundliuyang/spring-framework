@@ -26,6 +26,7 @@ import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
+ * 只有激活的剖面的组件/配置才会注册到 Spring 容器，类似于 Spring Boot 中的 profile 。
  * Indicates that a component is eligible for registration when one or more
  * {@linkplain #value specified profiles} are active.
  *

@@ -17,6 +17,7 @@
 package org.springframework.core.env;
 
 /**
+ * 继承自 AbstractEnvironment ，非 Servlet(Web) 环境下的标准 Environment 实现
  * {@link Environment} implementation suitable for use in 'standard' (i.e. non-web)
  * applications.
  *

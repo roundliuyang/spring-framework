@@ -19,6 +19,7 @@ package org.springframework.core.env;
 import org.springframework.lang.Nullable;
 
 /**
+ * PropertyResolver 的实现者，他对一组 PropertySources 提供属性解析服务
  * {@link PropertyResolver} implementation that resolves property values against
  * an underlying set of {@link PropertySources}.
  *
@@ -31,6 +32,10 @@ import org.springframework.lang.Nullable;
  */
 public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 
+	/**
+	 * 仅有一个成员变量：PropertySources 。该成员变量内部存储着一组 PropertySource，表示 key-value 键值对的源的抽象基类，
+	 * 即一个 PropertySource 对象则是一个 key-value 键值对
+	 */
 	@Nullable
 	private final PropertySources propertySources;
 
@@ -74,20 +79,32 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 		return getProperty(key, String.class, false);
 	}
 
+	/**
+	 *
+	 * @param key 获取的 key
+	 * @param targetValueType  目标 value 的类型
+	 * @param resolveNestedPlaceholders  是否解决嵌套占位符
+	 * @param <T>
+	 */
 	@Nullable
 	protected <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
 		if (this.propertySources != null) {
+			// 遍历 propertySources 数组
 			for (PropertySource<?> propertySource : this.propertySources) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Searching for key '" + key + "' in PropertySource '" +
 							propertySource.getName() + "'");
 				}
+				// 获得 key 对应的 value 值
 				Object value = propertySource.getProperty(key);
 				if (value != null) {
+					// 判断是否需要进行嵌套占位符解析，如果需要则调用 #resolveNestedPlaceholders(String value) 方法，进行嵌套占位符解析。
 					if (resolveNestedPlaceholders && value instanceof String) {
 						value = resolveNestedPlaceholders((String) value);
 					}
+					// 如果未找到 key 对应的值，则打印日志
 					logKeyFound(key, propertySource, value);
+					// value 的类型转换
 					return convertValueIfNecessary(value, targetValueType);
 				}
 			}

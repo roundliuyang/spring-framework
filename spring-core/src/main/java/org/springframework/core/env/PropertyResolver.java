@@ -19,6 +19,10 @@ package org.springframework.core.env;
 import org.springframework.lang.Nullable;
 
 /**
+ * 就 Properties 体系而言，PropertyResolver 定义了访问 Properties 属性值的方法，而 ConfigurablePropertyResolver 则定义了解析 Properties 一些相关的规则和值进行类型转换所需要的 Service。
+ * 该体系有两个实现者：AbstractPropertyResolver 和 PropertySourcesPropertyResolver，其中 AbstractPropertyResolver 为实现的抽象基类，PropertySourcesPropertyResolver 为真正的实现者。
+ *
+ * 属性解析器，用于针对任何底层来源解析属性的接口
  * Interface for resolving properties against any underlying source.
  *
  * @author Chris Beams

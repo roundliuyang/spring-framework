@@ -34,6 +34,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 实现了 ConfigurableEnvironment 接口，默认属性和存储容器的定义，并且实现了 ConfigurableEnvironment 的方法，并且为子类预留可覆盖了扩展方法
+ * 允许通过设置 ACTIVE_PROFILES_PROPERTY_NAME 和DEFAULT_PROFILES_PROPERTY_NAME 属性指定活动和默认配置文件。子类的主要区别在于它们默认添加的 PropertySource 对象。而 AbstractEnvironment 则没有添加任何内容。
  * Abstract base class for {@link Environment} implementations. Supports the notion of
  * reserved default profile names and enables specifying active and default profiles
  * through the {@link #ACTIVE_PROFILES_PROPERTY_NAME} and
@@ -129,6 +131,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
 
 	/**
+	 * 子类应该通过受保护的 #customizePropertySources(MutablePropertySources) 钩子提供属性源。
 	 * Customize the set of {@link PropertySource} objects to be searched by this
 	 * {@code Environment} during calls to {@link #getProperty(String)} and related
 	 * methods.
@@ -222,8 +225,13 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	// Implementation of ConfigurableEnvironment interface
 	//---------------------------------------------------------------------
 
+	/**
+	 * 获取 activeProfiles 集合即可
+	 * @return
+	 */
 	@Override
 	public String[] getActiveProfiles() {
+		// 委托给 #doGetActiveProfiles() 方法，代码实现：
 		return StringUtils.toStringArray(doGetActiveProfiles());
 	}
 
@@ -237,9 +245,12 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	 */
 	protected Set<String> doGetActiveProfiles() {
 		synchronized (this.activeProfiles) {
+			// 如果 activeProfiles 为空，则进行初始化
 			if (this.activeProfiles.isEmpty()) {
+				// 获得 ACTIVE_PROFILES_PROPERTY_NAME 对应的 profiles 属性值
 				String profiles = getProperty(ACTIVE_PROFILES_PROPERTY_NAME);
 				if (StringUtils.hasText(profiles)) {
+					// 设置到 activeProfiles 中
 					setActiveProfiles(StringUtils.commaDelimitedListToStringArray(
 							StringUtils.trimAllWhitespace(profiles)));
 				}
@@ -255,8 +266,11 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 			logger.debug("Activating profiles " + Arrays.asList(profiles));
 		}
 		synchronized (this.activeProfiles) {
+			// 清空 activeProfiles
 			this.activeProfiles.clear();
+			// 遍历 profiles 数组，添加到 activeProfiles 中
 			for (String profile : profiles) {
+				// 校验
 				validateProfile(profile);
 				this.activeProfiles.add(profile);
 			}
