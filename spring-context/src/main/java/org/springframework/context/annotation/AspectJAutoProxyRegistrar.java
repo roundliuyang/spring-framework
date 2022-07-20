@@ -31,6 +31,11 @@ import org.springframework.core.type.AnnotationMetadata;
  * @since 3.1
  * @see EnableAspectJAutoProxy
  */
+
+/**
+ * 实现了 ImportBeanDefinitionRegistrar 接口，会编程式的向IOC容器中注册组件。
+ * 下面的 registerBeanDefinitions 方法中分为两个步骤：注册 AspectJAnnotationAutoProxyCreator ，解析 @EnableAspectJAutoProxy 注解。
+ */
 class AspectJAutoProxyRegistrar implements ImportBeanDefinitionRegistrar {
 
 	/**
@@ -44,6 +49,10 @@ class AspectJAutoProxyRegistrar implements ImportBeanDefinitionRegistrar {
 
 		AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry);
 
+		/**
+		 * 这部分因为默认的 @EnableAspectJAutoProxy 中两个属性默认均为false，故这部分不起作用。
+		 * 至此，可以发现，@EnableAspectJAutoProxy 的根本作用是在IOC容器中注册了一个 AnnotationAwareAspectJAutoProxyCreator 。下面来解析这个类的作用。
+		 */
 		AnnotationAttributes enableAspectJAutoProxy =
 				AnnotationConfigUtils.attributesFor(importingClassMetadata, EnableAspectJAutoProxy.class);
 		if (enableAspectJAutoProxy != null) {

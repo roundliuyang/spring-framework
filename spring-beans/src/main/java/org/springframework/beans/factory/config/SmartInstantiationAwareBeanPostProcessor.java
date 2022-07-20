@@ -22,6 +22,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
 
 /**
+ * 扩展 InstantiationAwareBeanPostProcessor 接口，添加了用于预测已处理bean的最终类型的回调。 注意：此接口是专用接口，主要供框架内部使用。
+ * 通常，应用程序提供的后处理器应简单地实现纯 BeanPostProcessor 接口或从 InstantiationAwareBeanPostProcessorAdapter 类派生。
+ * 它扩展了 InstantiationAwareBeanPostProcessor 接口，这个接口之前咱在IOC部分介绍过，它用于组件的创建前后做后置处理，
+ * 恰好AOP的核心是用代理对象代替普通对象，用这种后置处理器刚好能完成需求。
  * Extension of the {@link InstantiationAwareBeanPostProcessor} interface,
  * adding a callback for predicting the eventual type of a processed bean.
  *

@@ -35,6 +35,11 @@ import org.springframework.aop.support.MethodMatchers;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ * 1.获取全局增强器适配器。
+ * 2.遍历所有增强器，如果增强器的类型是 PointcutAdvisor ，并且能匹配这个切入点，则拿适配器去解析增强器，返回一组方法拦截器，添加到拦截器列表中。
+ * 3. 如果类型是引入类型、其他类型，同样最终添加到拦截器列表中。
+ * 其中 PointcutAdvisor 类型要转换为 MethodInterceptor 类型，需要借助适配器，调用 registry.getInterceptors 方法。
  * A simple but definitive way of working out an advice chain for a Method,
  * given an {@link Advised} object. Always rebuilds each advice chain;
  * caching can be provided by subclasses.
@@ -53,6 +58,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 
 		// This is somewhat tricky... We have to process introductions first,
 		// but we need to preserve order in the ultimate list.
+		// 增强器适配器注册器，它会根据增强器来解析，返回拦截器数组
 		List<Object> interceptorList = new ArrayList<Object>(config.getAdvisors().length);
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
 		boolean hasIntroductions = hasMatchingIntroductions(config, actualClass);
@@ -60,7 +66,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 
 		for (Advisor advisor : config.getAdvisors()) {
 			if (advisor instanceof PointcutAdvisor) {
-				// Add it conditionally.
+				// Add it conditionally.  就是在@Aspect标注的切面类中声明的那些通知方法的封装
 				PointcutAdvisor pointcutAdvisor = (PointcutAdvisor) advisor;
 				if (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
 					MethodMatcher mm = pointcutAdvisor.getPointcut().getMethodMatcher();
@@ -87,6 +93,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 				}
 			}
 			else {
+				// 5.1.1.1 适配器根据增强器来获取方法拦截器列表
 				Interceptor[] interceptors = registry.getInterceptors(advisor);
 				interceptorList.addAll(Arrays.asList(interceptors));
 			}

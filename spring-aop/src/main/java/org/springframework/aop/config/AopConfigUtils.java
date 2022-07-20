@@ -72,7 +72,7 @@ public abstract class AopConfigUtils {
 	@Nullable
 	public static BeanDefinition registerAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
-
+		// 注意在这个方法中已经把AnnotationAwareAspectJAutoProxyCreator的字节码传入方法了
 		return registerOrEscalateApcAsRequired(InfrastructureAdvisorAutoProxyCreator.class, registry, source);
 	}
 
@@ -114,6 +114,10 @@ public abstract class AopConfigUtils {
 		}
 	}
 
+	/**
+	 * 下面的方法就是创建 AnnotationAwareAspectJAutoProxyCreator 的核心方法，可以发现逻辑还是比较简单的。
+	 * 方法进入后先判断IOC容器中是否包含一个特定的Bean，如果没有，下面直接用 RootBeanDefinition 创建。
+	 */
 	@Nullable
 	private static BeanDefinition registerOrEscalateApcAsRequired(
 			Class<?> cls, BeanDefinitionRegistry registry, @Nullable Object source) {

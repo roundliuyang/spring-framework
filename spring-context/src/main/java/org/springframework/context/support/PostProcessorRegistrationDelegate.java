@@ -198,10 +198,12 @@ final class PostProcessorRegistrationDelegate {
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
 		List<String> orderedPostProcessorNames = new ArrayList<>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+		// 根据PriorityOrdered、Ordered接口，对这些BeanPostProcessor进行归类
 		for (String ppName : postProcessorNames) {
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
 				priorityOrderedPostProcessors.add(pp);
+				// MergedBeanDefinitionPostProcessor类型的后置处理器被单独放在一个集合中，说明该接口比较特殊
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
 					internalPostProcessors.add(pp);
 				}
@@ -219,6 +221,17 @@ final class PostProcessorRegistrationDelegate {
 		registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);
 
 		// Next, register the BeanPostProcessors that implement Ordered.
+		/**
+		 * 注册实现了Ordered接口的BeanPostProcessor
+		 * 之前看 AnnotationAwareAspectJAutoProxyCreator 的类继承和接口实现，发现它实现了 Ordered接口，会在实际分类时进入 orderedPostProcessorNames 集合中。
+		 * 通过Debug，发现实现了 Ordered 接口的就它一个。。。
+		 * 之后要调用下面一段源码中，这里要直接 getBean 来创建 AnnotationAwareAspectJAutoProxyCreator 了！
+		 *
+		 * getBean → doCreateBean
+		 * 根据前面的IOC原理，肯定会执行一系列操作：getBean → doGetBean → createBean → doCreateBean 。最终创建这个后置处理器，放入IOC容器中，此部分还没有涉及到AOP的实际创建时机，我们暂且略过。
+		 *
+		 *
+		 */
 		List<BeanPostProcessor> orderedPostProcessors = new ArrayList<>();
 		for (String ppName : orderedPostProcessorNames) {
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);

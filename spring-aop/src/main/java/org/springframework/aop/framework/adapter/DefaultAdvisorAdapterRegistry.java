@@ -75,6 +75,9 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 		throw new UnknownAdviceTypeException(advice);
 	}
 
+	/**
+	 * 源码逻辑也比较简单，通知本身就是 MethodInterceptor 对象时，不需要转换；如果通知能被 AdvisorAdapter 适配，也可以添加进去。
+	 */
 	@Override
 	public MethodInterceptor[] getInterceptors(Advisor advisor) throws UnknownAdviceTypeException {
 		List<MethodInterceptor> interceptors = new ArrayList<>(3);
