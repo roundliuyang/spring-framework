@@ -284,7 +284,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 		// If the transaction attribute is null, the method is non-transactional.
 		TransactionAttributeSource tas = getTransactionAttributeSource();
-		// 获取@Transactional的属性配置
+		// 获取@Transactional的属性配置(事务定义信息已经在这里获取到了)
 		final TransactionAttribute txAttr = (tas != null ? tas.getTransactionAttribute(method, targetClass) : null);
 		// 获取事务管理器（IOC容器中获取）
 		final PlatformTransactionManager tm = determineTransactionManager(txAttr);
@@ -454,6 +454,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	}
 
 	/**
+	 * createTransactionIfNecessary 方法会根据切入点判断是否需要开启事务，而切入点就是要执行的 test2（笔记要写的demo） 方法。
 	 * Create a transaction if necessary based on the given TransactionAttribute.
 	 * <p>Allows callers to perform custom TransactionAttribute lookups through
 	 * the TransactionAttributeSource.
@@ -470,6 +471,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
 
 		// If no name specified, apply method identification as transaction name.
+		// 1.2 如果当前执行方法需要事务，则开启事务，将方法名当做事务名称
 		if (txAttr != null && txAttr.getName() == null) {
 			txAttr = new DelegatingTransactionAttribute(txAttr) {
 				@Override
@@ -482,6 +484,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		TransactionStatus status = null;
 		if (txAttr != null) {
 			if (tm != null) {
+				// 1.3 获取事务状态。
 				status = tm.getTransaction(txAttr);
 			}
 			else {
