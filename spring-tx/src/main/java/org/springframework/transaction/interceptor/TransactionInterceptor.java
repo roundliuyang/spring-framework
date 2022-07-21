@@ -86,7 +86,10 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 		setTransactionAttributeSource(tas);
 	}
 
-
+	/**
+	 * 首先做一次目标方法执行的空校验，AopUtils.getTargetClass() 是为了获取被代
+	 * 理的目标类，之后执行 invokeWithinTransaction 方法，套用事务。
+	 */
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation invocation) throws Throwable {
