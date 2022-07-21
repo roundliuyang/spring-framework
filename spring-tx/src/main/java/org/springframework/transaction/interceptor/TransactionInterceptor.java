@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
+ * 发现它实现了 MethodInterceptor ！它也是一个AOP的增强器。那它的核心作用大概率就是控制事务咯？咱先不着急，它的工作原理咱到下一篇再看，本篇先把需要配置的组件都解析完。
  * AOP Alliance MethodInterceptor for declarative transaction
  * management using the common Spring transaction infrastructure
  * ({@link org.springframework.transaction.PlatformTransactionManager}).

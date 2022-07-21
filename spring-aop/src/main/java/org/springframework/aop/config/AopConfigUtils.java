@@ -69,6 +69,10 @@ public abstract class AopConfigUtils {
 		return registerAutoProxyCreatorIfNecessary(registry, null);
 	}
 
+	/**
+	 * registerAutoProxyCreatorIfNecessary 方法注册了一个 InfrastructureAdvisorAutoProxyCreator ，跟之前咱在AOP部分
+	 * 看到的 @EnableAspectJAutoProxy 注解注册的 AnnotationAwareAspectJAutoProxyCreator 几乎完全一致了，那下面的方法也不用看了，思路真的完全一致。
+	 */
 	@Nullable
 	public static BeanDefinition registerAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {

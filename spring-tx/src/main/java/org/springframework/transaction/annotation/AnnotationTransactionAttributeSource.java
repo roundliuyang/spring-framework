@@ -27,6 +27,8 @@ import java.util.Set;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.interceptor.AbstractFallbackTransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionAttribute;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.interceptor.TransactionProxyFactoryBean;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -51,6 +53,15 @@ import org.springframework.util.ClassUtils;
  * @see Ejb3TransactionAnnotationParser
  * @see org.springframework.transaction.interceptor.TransactionInterceptor#setTransactionAttributeSource
  * @see org.springframework.transaction.interceptor.TransactionProxyFactoryBean#setTransactionAttributeSource
+ */
+
+/**
+ * org.springframework.transaction.interceptor.TransactionAttributeSource接口的实现，用于处理JDK 1.5+注释格式的事务元数据。
+ * 此类读取Spring的 @Transactional 注解，并将相应的事务属性公开给Spring的事务基础结构。此外，还支持JTA 1.2的 javax.transaction.Transactional
+ * 和EJB3的 javax.ejb.TransactionAttribute 注解（如果存在）。此类也可用作自定义 TransactionAttributeSource 的基类，或通过 TransactionAnnotationParser 策略进行自定义。
+ *
+ * 说了这么多，我们只关心一句话：它读取 @Transactional 注解。由此可见 AnnotationTransactionAttributeSource 是读取 @Transactional 注解的。
+ * 上面的Bean在创建时直接调了构造方法
  */
 @SuppressWarnings("serial")
 public class AnnotationTransactionAttributeSource extends AbstractFallbackTransactionAttributeSource
@@ -77,6 +88,7 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	}
 
 	/**
+	 * 注意下面重载的构造方法中，它给 annotationParsers 中添加了一个 SpringTransactionAnnotationParser 。
 	 * Create a custom AnnotationTransactionAttributeSource, supporting
 	 * public methods that carry the {@code Transactional} annotation
 	 * or the EJB3 {@link javax.ejb.TransactionAttribute} annotation.

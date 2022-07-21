@@ -76,7 +76,7 @@ public abstract class AbstractTransactionManagementConfiguration implements Impo
 		this.txManager = configurer.annotationDrivenTransactionManager();
 	}
 
-
+	// 可以发现在最底下它又创建了一个组件，类型是 TransactionalEventListenerFactory 。
 	@Bean(name = TransactionManagementConfigUtils.TRANSACTIONAL_EVENT_LISTENER_FACTORY_BEAN_NAME)
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionalEventListenerFactory transactionalEventListenerFactory() {

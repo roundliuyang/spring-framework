@@ -35,6 +35,9 @@ import org.springframework.transaction.config.TransactionManagementConfigUtils;
 public class TransactionManagementConfigurationSelector extends AdviceModeImportSelector<EnableTransactionManagement> {
 
 	/**
+	 * @EnableTransactionManagement 注解默认使用 PROXY 来增强事务，那这个switch结构中就应该返回两个类的全限定类名：AutoProxyRegistrar 、
+	 * ProxyTransactionManagementConfiguration ，可以看得出来，声明式事务最终起作用是上述两个组件的功能。下面咱分别来看这两个类。
+	 *
 	 * Returns {@link ProxyTransactionManagementConfiguration} or
 	 * {@code AspectJTransactionManagementConfiguration} for {@code PROXY}
 	 * and {@code ASPECTJ} values of {@link EnableTransactionManagement#mode()},

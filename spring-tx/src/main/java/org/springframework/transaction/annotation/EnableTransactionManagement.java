@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
 /**
+ * 注解内部的定义咱暂且不关心，只记住默认使用 PROXY - 代理方式来增强代码即可。
  * Enables Spring's annotation-driven transaction management capability, similar to
  * the support found in Spring's {@code <tx:*>} XML namespace. To be used on
  * {@link org.springframework.context.annotation.Configuration @Configuration}
@@ -153,6 +154,7 @@ import org.springframework.core.Ordered;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// 咱已经很清楚， ImportSelector 的作用是筛选组件，返回组件的全限定类名，让IOC容器来创建这些组件。
 @Import(TransactionManagementConfigurationSelector.class)
 public @interface EnableTransactionManagement {
 

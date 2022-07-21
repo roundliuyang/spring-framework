@@ -22,6 +22,8 @@ import org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor;
 import org.springframework.lang.Nullable;
 
 /**
+ *
+ 由 TransactionAttributeSource 驱动的增强器，用于为开启事务的Bean的方法附加事务通知。
  * Advisor driven by a {@link TransactionAttributeSource}, used to include
  * a transaction advice bean for methods that are transactional.
  *
@@ -34,6 +36,11 @@ import org.springframework.lang.Nullable;
 @SuppressWarnings("serial")
 public class BeanFactoryTransactionAttributeSourceAdvisor extends AbstractBeanFactoryPointcutAdvisor {
 
+	/**
+	 * 从这部分源码中可以得知非常关键的点：它是利用切入点来增强方法 （源码中看到了pointcut）。
+	 * 源码中的pointcut属性的创建又要借助 TransactionAttributeSource 。这部分依赖关系如下：
+	 * Advisor → → →依赖→ → → Pointcut → → →依赖→ → → Source
+	 */
 	@Nullable
 	private TransactionAttributeSource transactionAttributeSource;
 

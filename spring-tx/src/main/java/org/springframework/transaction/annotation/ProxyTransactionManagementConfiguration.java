@@ -26,6 +26,7 @@ import org.springframework.transaction.interceptor.TransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 /**
+ * 很明显它向IOC容器中注册了3个Bean。
  * {@code @Configuration} class that registers the Spring infrastructure beans
  * necessary to enable proxy-based annotation-driven transaction management.
  *
@@ -50,12 +51,17 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 		return advisor;
 	}
 
+	/**
+	 * 创建出来的只是一个普通的 AnnotationTransactionAttributeSource 而已
+	 * @return
+	 */
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionAttributeSource transactionAttributeSource() {
 		return new AnnotationTransactionAttributeSource();
 	}
 
+	// 在Bean的创建过程中，它也把事务配置源保存起来了，并且还注入了事务管理器。
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionInterceptor transactionInterceptor() {

@@ -36,6 +36,11 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see org.springframework.cache.annotation.EnableCaching
  * @see org.springframework.transaction.annotation.EnableTransactionManagement
  */
+
+/**
+ * 实现了 ImportBeanDefinitionRegistrar ，又是手动向IOC容器中导入组件。
+ *
+ */
 public class AutoProxyRegistrar implements ImportBeanDefinitionRegistrar {
 
 	private final Log logger = LogFactory.getLog(getClass());
@@ -69,6 +74,12 @@ public class AutoProxyRegistrar implements ImportBeanDefinitionRegistrar {
 			if (mode != null && proxyTargetClass != null && AdviceMode.class == mode.getClass() &&
 					Boolean.class == proxyTargetClass.getClass()) {
 				candidateFound = true;
+				/**
+				 * PROXY模式下会额外注册Bean
+				 *
+				 * 如果 @EnableTransactionManagement 注解中设置 adviceMode 为 PROXY （默认PROXY），则会利用 AopUtils 创建组件，
+				 * 并且如果 @EnableTransactionManagement 设置 proxyTargetClass 为true，则还会额外导入组件（默认为false）。下面咱看看它又向容器里注册了什么组件。
+				 */
 				if (mode == AdviceMode.PROXY) {
 					AopConfigUtils.registerAutoProxyCreatorIfNecessary(registry);
 					if ((Boolean) proxyTargetClass) {

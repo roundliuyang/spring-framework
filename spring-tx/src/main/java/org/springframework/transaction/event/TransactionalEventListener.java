@@ -26,6 +26,18 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.AliasFor;
 
 /**
+ * 自 SpringFramework4.2 之后，出现了一种能在事务动作发生前后注入监听器的机制。举几个应用场景的例子：
+ * 执行完数据库操作后发送消息
+ * 执行数据库操作之前记录日志
+ * 业务逻辑出错时事务回滚之后发邮件警报
+ * 类似于这种事务动作执行前后进行附加操作的问题，在SpringFramework4.2之后就可以通过 @TransactionalEventListener 注解来实现。
+ * @TransactionalEventListener 可提供4种监听时机，来执行附加操作：
+ * BEFORE_COMMIT：提交之前
+ * AFTER_COMMIT：提交之后
+ * AFTER_ROLLBACK：回滚之后
+ * AFTER_COMPLETION：事务完成之后
+ *
+ *
  * An {@link EventListener} that is invoked according to a {@link TransactionPhase}.
  *
  * <p>If the event is not published within the boundaries of a managed transaction, the
@@ -39,6 +51,46 @@ import org.springframework.core.annotation.AliasFor;
  * @author Stephane Nicoll
  * @author Sam Brannen
  * @since 4.2
+ */
+
+
+/*
+	@TransactionalEventListener的使用方式简单Demo
+
+	@Service
+	public class DemoService {
+
+		@Autowired
+		private USerDao userDao;
+
+		@Autowired
+		private ApplicationEventPublisher applicationEventPublisher;
+
+		@Transactional(rollbackFor = Exception.class)
+		public void test() {
+			// 执行清空用户的数据库操作
+			userDao.deleteAll();
+
+			// 使用事件广播器来广播 用户清除事件
+			applicationEventPublisher.publishEvent(new UserCleanEvent());
+		}
+	}
+
+	@Component
+	class MyTransactionListener {
+
+		@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+		private void onTestEvent(UserCleanEvent event) {
+			System.out.println("UserCleanEvent detected ......");
+		}
+
+	}
+
+	// 定义 用户清除事件，它需要继承ApplicationEvent
+	class UserCleanEvent extends ApplicationEvent {
+
+	}
+
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

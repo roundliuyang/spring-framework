@@ -31,6 +31,9 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
+ * 这里面的核心方法如上述源码，可以发现它的核心功能是解析 @Transactional 注解的信息！
+ * 至此上面的配置类中需要的事务增强器、事务切入点、事务配置源、事务注解解析器都解析完，回到配置类中，还有一个拦截器：
+ *
  * Strategy implementation for parsing Spring's {@link Transactional} annotation.
  *
  * @author Juergen Hoeller
@@ -42,6 +45,7 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 	@Override
 	@Nullable
 	public TransactionAttribute parseTransactionAnnotation(AnnotatedElement element) {
+		// 搜索被标注的元素（类、方法）上是否最终标注了@Transactional注解
 		AnnotationAttributes attributes = AnnotatedElementUtils.findMergedAnnotationAttributes(
 				element, Transactional.class, false, false);
 		if (attributes != null) {
@@ -58,15 +62,18 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 
 	protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes attributes) {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
-
+		// 解析事务传播行为
 		Propagation propagation = attributes.getEnum("propagation");
 		rbta.setPropagationBehavior(propagation.value());
+		// 解析事务隔离级别
 		Isolation isolation = attributes.getEnum("isolation");
 		rbta.setIsolationLevel(isolation.value());
+		// 解析超时
 		rbta.setTimeout(attributes.getNumber("timeout").intValue());
+		// 解析只读事务
 		rbta.setReadOnly(attributes.getBoolean("readOnly"));
 		rbta.setQualifier(attributes.getString("value"));
-
+		// 解析回滚异常
 		List<RollbackRuleAttribute> rollbackRules = new ArrayList<>();
 		for (Class<?> rbRule : attributes.getClassArray("rollbackFor")) {
 			rollbackRules.add(new RollbackRuleAttribute(rbRule));
