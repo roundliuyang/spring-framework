@@ -17,6 +17,9 @@
 package org.springframework.context;
 
 /**
+ * ApplicationContextInitializer 是一个回调接口，用于 Spring ConfigurableApplicationContext 容器执行 #refresh() 方法进行初始化之前，提前走一些自定义的初始化逻辑。
+ * 【场景】它的使用场景，例如说 Web 应用中需要注册属性，或者激活 Profiles 。
+ *
  * Callback interface for initializing a Spring {@link ConfigurableApplicationContext}
  * prior to being {@linkplain ConfigurableApplicationContext#refresh() refreshed}.
  *

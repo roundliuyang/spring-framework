@@ -42,6 +42,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * ResolvableType是 Spring4 提供的泛型操作支持类，通过它可以很容易地获得泛型的实际类型信息，
+ * 比如类级、字段级等等泛型信息。在 Spring4 的框架中，很多核心类内部涉及的泛型操作大都使用 ResolvableType 类进行处理。
+ *
  * Encapsulates a Java {@link java.lang.reflect.Type}, providing access to
  * {@link #getSuperType() supertypes}, {@link #getInterfaces() interfaces}, and
  * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately
