@@ -95,7 +95,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		this.readerContext = readerContext;
 		logger.debug("Loading bean definitions");
 		// 获得 XML Document Root Element
-		// 执行注册 BeanDefinition
+		// 执行注册 BeanDefinition。
 		Element root = doc.getDocumentElement();
 		doRegisterBeanDefinitions(root);
 	}
@@ -119,6 +119,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 
 	/**
+	 * 从 Document 对象中获取根元素 root，然后调用 #doRegisterBeanDefinitions(Element root)` 方法，开启真正的解析过程。
 	 * Register each bean definition within the given root {@code <beans/>} element.
 	 */
 	protected void doRegisterBeanDefinitions(Element root) {
@@ -170,7 +171,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
-	 * 进行解析逻辑
+	 * 是对根元素 root 的解析注册过程
 	 * Parse the elements at the root level in the document:
 	 * "import", "alias", "bean".
 	 * @param root the DOM root element of the document
@@ -207,6 +208,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
+	 * 若定义的元素节点使用的是 Spring 默认命名空间，则调用 #parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) 方法，进行默认标签解析
 	 * 该方法的功能一目了然，分别是对四种不同的标签进行解析，分别是 import、alias、bean、beans 。咱门从第一个标签 import 开始。
 	 */
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {

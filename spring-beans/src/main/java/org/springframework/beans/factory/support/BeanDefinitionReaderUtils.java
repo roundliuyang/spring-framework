@@ -141,6 +141,10 @@ public class BeanDefinitionReaderUtils {
 	}
 
 	/**
+	 * 调用 BeanDefinitionReaderUtils.registerBeanDefinition() 方法，来注册。其实，这里面也是调用
+	 * BeanDefinitionRegistry 的 #registerBeanDefinition(String beanName, BeanDefinition beanDefinition) 方法，来注册 BeanDefinition 。
+	 * 不过，最终的实现是在 DefaultListableBeanFactory 中实现
+	 *
 	 * Register the given bean definition with the given bean factory.
 	 * @param definitionHolder the bean definition including name and aliases
 	 * @param registry the bean factory to register with
