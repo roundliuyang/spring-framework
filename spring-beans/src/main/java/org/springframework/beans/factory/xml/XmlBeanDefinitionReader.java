@@ -51,6 +51,8 @@ import org.springframework.util.xml.SimpleSaxErrorHandler;
 import org.springframework.util.xml.XmlValidationModeDetector;
 
 /**
+ * 读取器，用于载入 BeanDefinition
+ *
  * Bean definition reader for XML bean definitions.
  * Delegates the actual XML document reading to an implementation
  * of the {@link BeanDefinitionDocumentReader} interface.
@@ -306,7 +308,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 
 	/**
-	 * 加载资源的
+	 *  开始 BeanDefinition 的载入和注册进程，完成后的 BeanDefinition 放置在 IoC 容器中。
 	 * 	从指定的 xml 文件加载 Bean Definition ，这里会先对 Resource 资源封装成 org.springframework.core.io.support.EncodedResource 对象。
 	 * 	这里为什么需要将 Resource 封装成 EncodedResource 呢？主要是为了对 Resource 进行编码，保证内容读取的正确性。
 	 * 	然后，再调用 #loadBeanDefinitions(EncodedResource encodedResource) 方法，执行真正的逻辑实现。
@@ -333,7 +335,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource);
 		}
-		// <1> 获取已经加载过的资源
+		//  获取已经加载过的资源
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<>(4);
@@ -345,9 +347,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
 		try {
-			// <2> 从 EncodedResource 获取封装的 Resource ，并从 Resource 中获取其中的 InputStream
+			//  从 EncodedResource 获取封装的 Resource ，并从 Resource 中获取其中的 InputStream
 			InputStream inputStream = encodedResource.getResource().getInputStream();
 			try {
+				// 从 InputStream 中得到 XML 的解析源
 				InputSource inputSource = new InputSource(inputStream);
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
@@ -398,6 +401,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 
 	/**
+	 * 从 encodedResource 源中获取 xml 的解析源，然后调用 #doLoadBeanDefinitions(InputSource inputSource, Resource resource) 方法，
+	 * 执行具体的解析过程。
+	 *
 	 * Actually load bean definitions from the specified XML file.
 	 * @param inputSource the SAX InputSource to read from
 	 * @param resource the resource descriptor for the XML file
@@ -411,7 +417,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		try {
 			// <1> 获取 XML Document 实例
 			Document doc = doLoadDocument(inputSource, resource);
-			// <2> 根据 Document 实例，注册 Bean 信息
+			// <2> 根据 Document 实例，注册 Bean 信息。开启 BeanDefinition 的解析注册过程。
 			return registerBeanDefinitions(doc, resource);
 		}
 		catch (BeanDefinitionStoreException ex) {
@@ -444,7 +450,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * 1.调用 #getValidationModeForResource(Resource resource) 方法，获取指定资源（xml）的验证模式。
 	 * 2.调用 DocumentLoader#loadDocument(InputSource inputSource, EntityResolver entityResolver,
 	 * ErrorHandler errorHandler, int validationMode, boolean namespaceAware) 方法，获取 XML Document 实例。
-	 * 详细解析，见 《【死磕 Spring】—— IoC 之获取 Document 对象》 。
 	 *
 	 * Actually load the specified document using the configured DocumentLoader.
 	 * @param inputSource the SAX InputSource to read from
