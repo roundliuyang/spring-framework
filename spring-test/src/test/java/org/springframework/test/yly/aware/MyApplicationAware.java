@@ -7,9 +7,8 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class MyApplicationAware implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware {
 
 	private String beanName;
@@ -47,6 +46,6 @@ public class MyApplicationAware implements BeanNameAware, BeanFactoryAware, Bean
 	public void display(){
 		System.out.println("beanName:" + beanName);
 		System.out.println("是否为单例：" + beanFactory.isSingleton(beanName));
-		System.out.println("系统环境为：" + applicationContext.getEnvironment());
+//		System.out.println("系统环境为：" + applicationContext.getEnvironment());
 	}
 }

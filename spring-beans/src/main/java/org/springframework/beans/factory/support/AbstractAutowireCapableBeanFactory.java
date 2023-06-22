@@ -415,7 +415,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throws BeansException {
 		/*
 		这段代码是通过迭代 #getBeanPostProcessors() 方法返回的结果集来调用 BeanPostProcessor 的 #postProcessBeforeInitialization(Object bean, String beanName) 方法，
-		但是在这里我们看到该方法返回的结果集为空，所以肯定不会执行相应的 #postProcessBeforeInitialization(Object bean, String beanName) 方法咯。怎么办？答案不言而喻：只需要 #getBeanPostProcessors() 方法，返回的结果集中存在至少一个元素即可.
+		但是在这里我们看到该方法返回的结果集为空，所以肯定不会执行相应的 #postProcessBeforeInitialization(Object bean, String beanName) 方法咯。
+		怎么办？答案不言而喻：只需要 #getBeanPostProcessors() 方法，返回的结果集中存在至少一个元素即可.
 		 */
 		Object result = existingBean;
 		// 遍历 BeanPostProcessor 数组

@@ -233,6 +233,9 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	String resolveEmbeddedValue(String value);
 
 	/**
+	 * 它的核心意思就是将指定 BeanPostProcessor 注册到该 BeanFactory 创建的 bean 中，同时它是按照插入的顺序进行注册的，
+	 * 完全忽略 Ordered 接口所表达任何排序语义（在 BeanPostProcessor 中我们提供一个 Ordered 顺序，这个后面讲解）
+	 *
 	 * Add a new BeanPostProcessor that will get applied to beans created
 	 * by this factory. To be invoked during factory configuration.
 	 * <p>Note: Post-processors submitted here will be applied in the order of

@@ -26,15 +26,25 @@ import org.springframework.lang.Nullable;
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
  *
- *
- *
  * BeanPostProcessor 可以理解为是 Spring 的一个工厂钩子（其实 Spring 提供一系列的钩子，如 Aware 、InitializingBean、DisposableBean），
  * 它是 Spring 提供的对象实例化阶段强有力的扩展点，允许 Spring 在实例化 bean 阶段对其进行定制化修改，比较常见的使用场景是处理标记接口实现类或者为当前对象提供代理实现（例如 AOP）。
+ *
  * 一般普通的 BeanFactory 是不支持自动注册 BeanPostProcessor 的，需要我们手动调用 #addBeanPostProcessor(BeanPostProcessor beanPostProcessor) 方法进行注册。
- * 注册后的 BeanPostProcessor 适用于所有该 BeanFactory 创建的 bean，但是 ApplicationContext 可以在其 bean 定义中自动检测所有的 BeanPostProcessor 并自动完成注册，同时将他们应用到随后创建的任何 Bean 中。
+ * 注册后的 BeanPostProcessor 适用于所有该 BeanFactory 创建的 bean，但是 ApplicationContext 可以在其 bean 定义中自动检测所有的 BeanPostProcessor 并自动完成注册，
+ * 同时将他们应用到随后创建的任何 Bean 中。
+ *
  * #postProcessBeforeInitialization(Object bean, String beanName) 和 #postProcessAfterInitialization(Object bean, String beanName) 两个方法，
  * 都接收一个 Object 类型的 bean ，一个 String 类型的 beanName ，其中 bean 是已经实例化了的 instanceBean ，能拿到这个你是不是可以对它为所欲为了？
- * 这两个方法是初始化 bean 的前后置处理器，他们应用 #invokeInitMethods(String beanName, final Object bean, RootBeanDefinition mbd) 方法的前后
+ * 这两个方法是初始化 bean 的前后置处理器，他们应用 #invokeInitMethods(String beanName, final Object bean, RootBeanDefinition mbd) 方法的前后。
+ *
+ * 小结：（重要）
+ * 1、BeanPostProcessor 的作用域是容器级别的，它只和所在的容器相关 ，当 BeanPostProcessor 完成注册后，它会应用于所有跟它在同一个容器内的 bean 。
+ * 2、BeanFactory 和 ApplicationContext 对 BeanPostProcessor 的处理不同，ApplicationContext 会自动检测所有实现了
+ *     BeanPostProcessor 接口的 bean，并完成注册，但是使用 BeanFactory 容器时
+ *     则需要手动调用 AbstractBeanFactory#addBeanPostProcessor(BeanPostProcessor beanPostProcessor) 方法来完成注册
+ * 3、ApplicationContext 的 BeanPostProcessor 支持 Ordered，而 BeanFactory 的 BeanPostProcessor 是不支持的，原因在于ApplicationContext 会对 BeanPostProcessor
+ *     进行 Ordered 检测并完成排序，而 BeanFactory 中的 BeanPostProcessor 只跟注册的顺序有关。
+ *
  * <p>ApplicationContexts can autodetect BeanPostProcessor beans in their
  * bean definitions and apply them to any beans subsequently created.
  * Plain bean factories allow for programmatic registration of post-processors,

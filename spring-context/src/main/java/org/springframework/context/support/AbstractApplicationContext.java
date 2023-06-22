@@ -718,7 +718,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * 实例化并调用已经注入的 BeanPostProcessor
-	 *  必须在应用中 bean 实例化之前调用
+	 * 必须在应用中 bean 实例化之前调用
+	 *
+	 * ApplicationContext 实现自动注册的原因，在于我们构造一个 ApplicationContext 实例对象的时候会调用 #registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) 方法，
+	 * 将检测到的 BeanPostProcessor 注入到 ApplicationContext 容器中，同时应用到该容器创建的 bean 中。
 	 *
 	 * Instantiate and register all BeanPostProcessor beans,
 	 * respecting explicit order if given.

@@ -936,6 +936,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 返回的 beanPostProcessors 是一个 private 的 List ，也就是说只要该类中存在 beanPostProcessors.add(BeanPostProcessor beanPostProcessor) 的调用，
+	 * 我们就找到了入口，在类 AbstractBeanFactory 中 addBeanPostProcessor（）方法有此调用。
 	 * Return the list of BeanPostProcessors that will get applied
 	 * to beans created with this factory.
 	 */
