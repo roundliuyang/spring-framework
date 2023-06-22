@@ -1191,6 +1191,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 */
 	protected String transformedBeanName(String name) {
 		// 调用 BeanFactoryUtils#transformedBeanName(String name) 方法，去除 FactoryBean 的修饰符
+		// 调用 #canonicalName(String name) 方法，取指定的 alias 所表示的最终 beanName
 		return canonicalName(BeanFactoryUtils.transformedBeanName(name));
 	}
 
