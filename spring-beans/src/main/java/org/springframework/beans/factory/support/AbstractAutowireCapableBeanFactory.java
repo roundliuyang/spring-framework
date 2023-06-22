@@ -545,10 +545,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * 实例化 bean 对象：#createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) 方法。
 	 * 属性注入：#populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) 方法。
 	 * 初始化 bean 对象：#initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd) 方法。
+	 *
 	 * 而初始化 bean 对象时，也是干了三件事情：
-	 * 激活 Aware 方法
-	 * 后置处理器的应用
-	 * 激活自定义的 init 方法
+	 * 	激活 Aware 方法
+	 *	后置处理器的应用
+	 * 	激活自定义的 init 方法
 	 *
 	 * Actually create the specified bean. Pre-creation processing has already happened
 	 * at this point, e.g. checking {@code postProcessBeforeInstantiation} callbacks.
