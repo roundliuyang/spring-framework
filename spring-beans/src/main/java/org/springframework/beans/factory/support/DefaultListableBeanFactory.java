@@ -887,7 +887,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 			this.frozenBeanDefinitionNames = null;
 		}
-		// 重新设置 beanName 对应的缓存
+		// 重新设置 beanName 对应的缓存。若缓存中存在该 beanName 或者单例 bean 集合中存在该 beanName ，
+		// 则调用 #resetBeanDefinition(String beanName) 方法，重置 BeanDefinition 缓存
 		if (existingDefinition != null || containsSingleton(beanName)) {
 			resetBeanDefinition(beanName);
 		}

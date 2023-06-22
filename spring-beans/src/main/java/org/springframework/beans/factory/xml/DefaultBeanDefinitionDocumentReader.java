@@ -343,6 +343,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
+	 * 完成 Bean 标签解析的核心工作
+	 * 
 	 * Process the given bean element, parsing the bean definition
 	 * and registering it with the registry.
 	 */
