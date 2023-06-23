@@ -19,8 +19,11 @@ package org.springframework.beans.factory.config;
 import org.springframework.beans.BeansException;
 
 /**
- * 在博客 《【死磕 Spring】—— IoC 之 深入分析 BeanPostProcessor》 中，深入介绍了 BeanPostProcessor 的实现机制。在这篇文章中提到 BeanPostProcessor 是 Spring 提供一种扩展机制，该机制允许我们在 Bean 实例化之后初始化之际对 Bean 进行增强处理（前、后置处理）。
- * 同样在 Spring 容器启动阶段，Spring 也提供了一种容器扩展机制：BeanFactoryPostProcessor，该机制作用于容器启动阶段，允许我们在容器实例化 Bean 之前对注册到该容器的 BeanDefinition 做出修改。
+ * 在博客 《【死磕 Spring】—— IoC 之 深入分析 BeanPostProcessor》 中，深入介绍了 BeanPostProcessor 的实现机制。在这篇文章中提到
+ * BeanPostProcessor 是 Spring 提供一种扩展机制，该机制允许我们在 Bean 实例化之后初始化之际对 Bean 进行增强处理（前、后置处理）。
+ *
+ * 同样在 Spring 容器启动阶段，Spring 也提供了一种容器扩展机制：BeanFactoryPostProcessor，该机制作用于容器启动阶段，
+ * 允许我们在容器实例化 Bean 之前对注册到该容器的 BeanDefinition 做出修改。
  *
  * BeanFactoryPostProcessor 的机制，就相当于给了我们在 Bean 实例化之前最后一次修改 BeanDefinition 的机会，我们可以利用这个机会对 BeanDefinition 来进行一些额外的操作，
  * 比如更改某些 bean 的一些属性，给某些 Bean 增加一些其他的信息等等操作。
@@ -53,7 +56,8 @@ public interface BeanFactoryPostProcessor {
 
 	/**
 	 * 1.Modify the application context's internal bean factory after its standard
-	 * initialization.            (表示了该方法的作用：在 standard initialization（实在是不知道这个怎么翻译：标准的初始化？） 之后（已经就是已经完成了 BeanDefinition 的加载）对 bean factory 容器进行修改。其中参数 beanFactory 应该就是已经完成了 standard initialization 的 BeanFactory 。)
+	 * initialization.            (表示了该方法的作用：在 standard initialization（实在是不知道这个怎么翻译：标准的初始化？） 之后（已经就是已经完成了 BeanDefinition 的加载）
+	 * 							  对 bean factory 容器进行修改。其中参数 beanFactory 应该就是已经完成了 standard initialization 的 BeanFactory 。)
 	 * 2.All bean definitions will have been loaded, but no beans
 	 * will have been instantiated yet. This allows for overriding or adding
 	 * properties even to eager-initializing beans.           (表示作用时机：所有的 BeanDefinition 已经完成了加载即加载至 BeanFactory 中，但是还没有完成初始化。)

@@ -26,4 +26,13 @@
 		<property name="test" value="test"/>
 	</bean>
 
+	<!-- BeanFactoryPostProcessor -->
+	<bean id="studentService" class="org.springframework.test.yly.beanfactorypostprocessor.StudentService">
+		<property name="name" value="chenssy"/>
+		<property name="age" value="10"/>
+	</bean>
+
+	<bean class="org.springframework.test.yly.beanfactorypostprocessor.BeanFactoryPostProcessor_1"/>
+	<bean class="org.springframework.test.yly.beanfactorypostprocessor.BeanFactoryPostProcessor_2"/>
+
 </beans>
