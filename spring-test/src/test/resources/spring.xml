@@ -9,5 +9,15 @@
 	<!--BeanPostProcessor-->
 	<bean id="beanPostProcessorTest" class="org.springframework.test.yly.beanpostprocessor.BeanPostProcessorTest "></bean>
 
+	<!--InitializingBean-->
+	<bean id="initializingBeanTest" class="org.springframework.test.yly.init.InitializingBeanTest">
+		<property name="name" value="chenssy 1 号"/>
+	</bean>
+
+	<!--init-method-->
+	<bean id="initMethodBeanTest" class="org.springframework.test.yly.init.InitMethodBeanTest"
+		  init-method="setOtherName">
+		<property name="name" value="chenssy 1 号"/>
+	</bean>
 
 </beans>
