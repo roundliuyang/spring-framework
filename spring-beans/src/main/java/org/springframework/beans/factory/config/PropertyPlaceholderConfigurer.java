@@ -234,13 +234,19 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 			this.resolver = new PropertyPlaceholderConfigurerResolver(props);
 		}
 
+		/**
+		 * 用于解析 String 值
+		 */
 		@Override
 		@Nullable
 		public String resolveStringValue(String strVal) throws BeansException {
+			// 解析真值
 			String resolved = this.helper.replacePlaceholders(strVal, this.resolver);
+			// trim
 			if (trimValues) {
 				resolved = resolved.trim();
 			}
+			// 返回真值
 			return (resolved.equals(nullValue) ? null : resolved);
 		}
 	}

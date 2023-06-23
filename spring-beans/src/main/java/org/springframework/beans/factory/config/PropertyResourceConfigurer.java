@@ -28,6 +28,8 @@ import org.springframework.core.io.support.PropertiesLoaderSupport;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 该类为属性资源的配置类
+ *
  * Allows for configuration of individual bean property values from a property resource,
  * i.e. a properties file. Useful for custom config files targeted at system
  * administrators that override bean properties configured in the application context.
@@ -85,7 +87,8 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 			convertProperties(mergedProps);
 
 			// Let the subclass process the properties.
-			// <3> 子类处理，调用 #processProperties(ConfigurableListableBeanFactory beanFactory, Properties props) 方法，前面两个步骤已经将配置文件中的值进行了处理，那么该方法就是真正的替换过程，该方法由子类实现。代码如下：
+			// <3> 子类处理，调用 #processProperties(ConfigurableListableBeanFactory beanFactory, Properties props) 方法，
+			//     前面两个步骤已经将配置文件中的值进行了处理，那么该方法就是真正的替换过程，该方法由子类实现。代码如下：
 			processProperties(beanFactory, mergedProps);
 		}
 		catch (IOException ex) {

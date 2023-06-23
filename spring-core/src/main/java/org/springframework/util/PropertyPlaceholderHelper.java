@@ -128,6 +128,7 @@ public class PropertyPlaceholderHelper {
 	}
 
 	/**
+	 * 进行占位符替换
 	 * Replaces all placeholders of format {@code ${name}} with the value returned
 	 * from the supplied {@link PlaceholderResolver}.
 	 * @param value the value containing the placeholders to be replaced
@@ -139,6 +140,9 @@ public class PropertyPlaceholderHelper {
 		return parseStringValue(value, placeholderResolver, new HashSet<>());
 	}
 
+	/**
+	 * ${} 占位符的替换
+	 */
 	protected String parseStringValue(
 			String value, PlaceholderResolver placeholderResolver, Set<String> visitedPlaceholders) {
 
