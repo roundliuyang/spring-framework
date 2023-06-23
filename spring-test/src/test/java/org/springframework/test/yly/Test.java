@@ -36,5 +36,7 @@ public class Test {
 		// 测试 init-method
 		InitMethodBeanTest initMethodBeanTest = (InitMethodBeanTest) factory.getBean("initMethodBeanTest");
 		System.out.println("name ：" + initMethodBeanTest.getName());
+
+		// 测试 LifeCycleBean ,可以在 lifecyclebean 包中测试。
 	}
 }

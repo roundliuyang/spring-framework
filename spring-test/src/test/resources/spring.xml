@@ -20,4 +20,10 @@
 		<property name="name" value="chenssy 1 号"/>
 	</bean>
 
+	<!-- LifeCycleBean -->
+	<bean id="lifeCycle" class="org.springframework.test.yly.lifecyclebean.LifeCycleBean"
+		  init-method="initMethod" destroy-method="destroyMethdo">
+		<property name="test" value="test"/>
+	</bean>
+
 </beans>
