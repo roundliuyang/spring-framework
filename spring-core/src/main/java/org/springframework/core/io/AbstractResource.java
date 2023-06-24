@@ -44,6 +44,7 @@ import org.springframework.util.ResourceUtils;
 public abstract class AbstractResource implements Resource {
 
 	/**
+	 * 判断文件是否存在，若判断过程产生异常（因为会调用SecurityManager来判断），就关闭对应的流
 	 * This implementation checks whether a File can be opened,
 	 * falling back to whether an InputStream can be opened.
 	 * This will cover both directories and content resources.
@@ -56,6 +57,7 @@ public abstract class AbstractResource implements Resource {
 		}
 		catch (IOException ex) {
 			// Fall back to stream existence: can we open the stream?
+			// 基于 InputStream 进行判断
 			try {
 				getInputStream().close();
 				return true;
@@ -67,6 +69,7 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 直接返回true,表示可读
 	 * This implementation always returns {@code true}.
 	 */
 	@Override
@@ -75,6 +78,7 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 直接返回 false，表示未被打开
 	 * This implementation always returns {@code false}.
 	 */
 	@Override
@@ -83,6 +87,7 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 直接返回 false，表示不为 File
 	 * This implementation always returns {@code false}.
 	 */
 	@Override
@@ -91,6 +96,7 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 抛出 FileNotFoundException 异常，交给子类实现
 	 * This implementation throws a FileNotFoundException, assuming
 	 * that the resource cannot be resolved to a URL.
 	 */
@@ -100,6 +106,7 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 基于 getURL() 返回的 URL 构建 URI
 	 * This implementation builds a URI based on the URL returned
 	 * by {@link #getURL()}.
 	 */
@@ -124,6 +131,8 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 根据 getInputStream() 的返回结果构建 ReadableByteChannel
+	 *
 	 * This implementation returns {@link Channels#newChannel(InputStream)}
 	 * with the result of {@link #getInputStream()}.
 	 * <p>This is the same as in {@link Resource}'s corresponding default method
@@ -135,6 +144,9 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 获取资源的长度
+	 * 这个资源内容长度实际就是资源的字节长度，通过全部读取一遍来判断
+	 *
 	 * This implementation reads the entire InputStream to calculate the
 	 * content length. Subclasses will almost always be able to provide
 	 * a more optimal version of this, e.g. checking a File length.
@@ -162,6 +174,8 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	/**
+	 * 返回资源最后的修改时间
+	 *
 	 * This implementation checks the timestamp of the underlying File,
 	 * if available.
 	 * @see #getFileForLastModifiedCheck()

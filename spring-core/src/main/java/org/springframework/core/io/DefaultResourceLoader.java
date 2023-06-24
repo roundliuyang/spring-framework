@@ -169,7 +169,9 @@ public class DefaultResourceLoader implements ResourceLoader {
 	}
 
 	/**
-	 * ResourceLoader 中最核心的方法为 #getResource(String location),它根据提供的location
+	 * ResourceLoader 中最核心的方法为 #getResource(String location),它根据提供的location返回相应的 Resource 。
+	 * 而 DefaultResourceLoader 对该方法提供了核心实现（因为，它的两个子类都没有提供覆盖该方法，所以可以断定 ResourceLoader 的资源加载策略就封装在 DefaultResourceLoader 中)
+	 *
 	 * @param location the resource location
 	 */
 	@Override
