@@ -48,6 +48,8 @@ import org.springframework.util.Assert;
  */
 
 /**
+ * 支持 AOP 注解的，基于 AspectJ 的代理自动构造器
+ *
  * AspectJAwareAdvisorAutoProxyCreator子类，用于处理当前应用程序上下文中的所有 @AspectJ 注解的切面，以及Spring的Advisor。
  * 如果Spring AOP的基于代理的模型能够应用任何被 @AspectJ 注解标注的类，那么它们的增强方法将被自动识别。这涵盖了方法执行的切入点表达式。
  * 如果使用<aop:include>元素，则只有名称与包含模式匹配的被 @AspectJ 标注的Bean将被视为定义要用于Spring自动代理的方面。
@@ -98,6 +100,9 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	}
 
 
+	/**
+	 * 获得所有增强方法对应的 Advisor 对象。
+	 */
 	@Override
 	protected List<Advisor> findCandidateAdvisors() {
 		// Add all the Spring advisors found according to superclass rules.

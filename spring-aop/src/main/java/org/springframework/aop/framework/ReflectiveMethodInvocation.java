@@ -31,6 +31,7 @@ import org.springframework.core.BridgeMethodResolver;
 import org.springframework.lang.Nullable;
 
 /**
+ * 反射方法调用实现类
  * Spring's implementation of the AOP Alliance
  * {@link org.aopalliance.intercept.MethodInvocation} interface,
  * implementing the extended
@@ -156,6 +157,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 
 	/**
+	 * 执行方法。基于递归的方式，调用每个拦截器链中的拦截器，最后调用真正的方法。
 	 * 这段方法看上去逻辑有点复杂但又不太复杂。它提到了一个计数器的概念，用于记录当前拦截器链中调用的位置，以便拦截器链中的拦截器可以有序地调用。
 	 */
 	@Override
@@ -193,6 +195,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	}
 
 	/**
+	 * 执行真正的方法，即切点的方法
 	 * Invoke the joinpoint using reflection.
 	 * Subclasses can override this to use custom invocation.
 	 * @return the return value of the joinpoint

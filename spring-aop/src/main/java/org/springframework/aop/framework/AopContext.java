@@ -20,6 +20,7 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.lang.Nullable;
 
 /**
+ * AOP 上下文，基于 ThreadLocal 实现
  * Class containing static methods used to obtain information about the current AOP invocation.
  *
  * <p>The {@code currentProxy()} method is usable if the AOP framework is configured to
