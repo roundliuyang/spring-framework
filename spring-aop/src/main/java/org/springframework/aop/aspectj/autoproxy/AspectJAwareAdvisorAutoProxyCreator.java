@@ -34,6 +34,15 @@ import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 
 /**
+ * 这个类是Spring提供给开发者的AOP的核心类，就是AspectJAwareAdvisorAutoProxyCreator完成了【类/接口-->代理】的转换过程
+ *
+ * 这里最值得注意的一点是
+ * 	AspectJAwareAdvisorAutoProxyCreator是BeanPostProcessor接口的实现类
+ *	postProcessBeforeInitialization方法与postProcessAfterInitialization方法实现在父类AbstractAutoProxyCreator中
+ * 	postProcessBeforeInitialization方法是一个空实现
+ * 	逻辑代码在postProcessAfterInitialization方法中
+ * 	基于以上的分析，将Bean生成代理的时机已经一目了然了：在每个Bean初始化之后，如果需要，调用AspectJAwareAdvisorAutoProxyCreator中的postProcessAfterInitialization为Bean生成代理。
+ *
  * {@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}
  * subclass that exposes AspectJ's invocation context and understands AspectJ's rules
  * for advice precedence when multiple pieces of advice come from the same aspect.
