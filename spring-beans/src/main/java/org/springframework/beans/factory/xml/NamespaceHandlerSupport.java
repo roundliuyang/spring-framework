@@ -64,6 +64,11 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 
 
 	/**
+	 * 针对AOP的分析
+	 * Spring是通过AopNamespaceHandler处理的AOP，那么接着进入AopNamespaceHandler的parse方法源代码（注意：AopNamespaceHandler没有覆盖这个方法）
+	 * 首先获取具体的Parser，因为当前节点是<aop:config>，上一部分最后有列，config是通过ConfigBeanDefinitionParser来处理的，
+	 * 因此findParserForElement(element, parserContext)这一部分代码获取到的是ConfigBeanDefinitionParser，接着看ConfigBeanDefinitionParser的parse方法
+	 *
 	 * Parses the supplied {@link Element} by delegating to the {@link BeanDefinitionParser} that is
 	 * registered for that {@link Element}.
 	 */

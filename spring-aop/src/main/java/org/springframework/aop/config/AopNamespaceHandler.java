@@ -23,6 +23,12 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 /**
  * 对 <aop:/> 命名空间的处理器。
  *
+ * 具体到AopNamespaceHandler里面，有几个Parser，是用于具体标签转换的，分别为：
+ * 	config-->ConfigBeanDefinitionParser
+ * 	aspectj-autoproxy-->AspectJAutoProxyBeanDefinitionParser
+ * 	scoped-proxy-->ScopedProxyBeanDefinitionDecorator
+ * 	spring-configured-->SpringConfiguredBeanDefinitionParser
+ *
  * {@code NamespaceHandler} for the {@code aop} namespace.
  *
  * <p>Provides a {@link org.springframework.beans.factory.xml.BeanDefinitionParser} for the

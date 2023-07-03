@@ -190,11 +190,15 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				Node node = nl.item(i);
 				if (node instanceof Element) {
 					Element ele = (Element) node;
+					/**
+					 * 正常来说，遇到<bean id="daoImpl"...>、<bean id="timeHandler"...>这两个标签的时候，都会执行<1>的代码，因为<bean>标签是默认的Namespace。
+					 * 但是在遇到后面的<aop:config>标签的时候就不一样了，<aop:config>并不是默认的Namespace，因此会执行<2>的代码。
+					 */
 					// <1> 如果该节点使用默认命名空间，执行默认解析
 					if (delegate.isDefaultNamespace(ele)) {
 						parseDefaultElement(ele, delegate);
 					}
-					// 如果该节点非默认命名空间，执行自定义解析
+					// <2>如果该节点非默认命名空间，执行自定义解析
 					else {
 						delegate.parseCustomElement(ele);
 					}
