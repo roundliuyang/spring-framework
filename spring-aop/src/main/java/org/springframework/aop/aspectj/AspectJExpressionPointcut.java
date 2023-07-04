@@ -65,6 +65,9 @@ import org.springframework.util.StringUtils;
 
 /**
  * AspectJ 的切点表达式
+ * 在日常使用中，大家通常是用 AspectJ 表达式对连接点进行选择。Spring 中提供了一个 AspectJ 表达式切点类 - AspectJExpressionPointcut
+ * 这个类最终实现了 Pointcut、ClassFilter 和 MethodMatcher 接口，因此该类具备了通过 AspectJ 表达式对连接点进行选择的能力.
+ *
  * Spring {@link org.springframework.aop.Pointcut} implementation
  * that uses the AspectJ weaver to evaluate a pointcut expression.
  *

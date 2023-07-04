@@ -17,7 +17,8 @@
 package org.springframework.aop;
 
 /**
- * 切点接口，用于选择连接点
+ * 切点接口，
+ * Pointcut 接口中定义了两个接口，分别用于返回类型过滤器和方法匹配器
  *
  * Core Spring pointcut abstraction.
  *
@@ -35,14 +36,14 @@ package org.springframework.aop;
 public interface Pointcut {
 
 	/**
-	 * 匹配哪些类。
+	 * 返回一个类型过滤器
 	 * Return the ClassFilter for this pointcut.
 	 * @return the ClassFilter (never {@code null})
 	 */
 	ClassFilter getClassFilter();
 
 	/**
-	 * 匹配哪些方法
+	 * 返回一个方法匹配器
 	 * Return the MethodMatcher for this pointcut.
 	 * @return the MethodMatcher (never {@code null})
 	 */
