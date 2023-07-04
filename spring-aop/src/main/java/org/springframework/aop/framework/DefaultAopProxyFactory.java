@@ -46,6 +46,15 @@ import org.springframework.aop.SpringProxy;
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
+	/**
+	 * 平时我们说AOP原理三句话就能概括：
+	 *
+	 * 对类生成代理使用CGLIB
+	 * 对接口生成代理使用JDK原生的Proxy
+	 * 可以通过配置文件指定对接口使用CGLIB生成代理
+	 * 这三句话的出处就是createAopProxy方法。
+	 *
+	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
@@ -60,6 +69,16 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 			return new ObjenesisCglibAopProxy(config);
 		}
 		else {
+			/**
+			 * 看到默认是使用JDK自带的Proxy生成代理，碰到以下三种情况例外：
+			 * 	1.ProxyConfig的isOptimize方法为true，这表示让Spring自己去优化而不是用户指定
+			 * 	2.ProxyConfig的isProxyTargetClass方法为true，这表示配置了proxy-target-class="true"
+			 * 	3.ProxyConfig满足hasNoUserSuppliedProxyInterfaces方法执行结果为true，这表示<bean>对象没有实现任何接口或者实现的接口是SpringProxy接口
+			 * 在进入第2行的if判断之后再根据目标<bean>的类型决定返回哪种AopProxy。简单总结起来就是：
+			 * 	1.proxy-target-class没有配置或者proxy-target-class="false"，返回JdkDynamicAopProxy
+			 * 	2.proxy-target-class="true"或者<bean>对象没有实现任何接口或者只实现了SpringProxy接口，返回Cglib2AopProxy
+			 * 当然，不管是JdkDynamicAopProxy还是Cglib2AopProxy，AdvisedSupport都是作为构造函数参数传入的，里面存储了具体的Advisor。
+			 */
 			return new JdkDynamicAopProxy(config);
 		}
 	}

@@ -211,6 +211,12 @@ public abstract class AopUtils {
 	}
 
 	/**
+	 * 这个方法其实就是拿当前Advisor对应的expression做了两层判断：
+	 *
+	 * 目标类必须满足expression的匹配规则
+	 * 目标类中的方法必须满足expression的匹配规则，当然这里方法不是全部需要满足expression的匹配规则，有一个方法满足即可
+	 * 如果以上两条都满足，那么容器则会判断该<bean>满足条件，需要被生成代理对象，具体方式为返回一个数组对象，该数组对象中存储的是<bean>对应的Advisor。
+	 *
 	 * Can the given pointcut apply at all on the given class?
 	 * <p>This is an important test as it can be used to optimize
 	 * out a pointcut for a class.
@@ -285,6 +291,7 @@ public abstract class AopUtils {
 		}
 		else if (advisor instanceof PointcutAdvisor) {
 			PointcutAdvisor pca = (PointcutAdvisor) advisor;
+			// 第一个参数advisor的实际类型是AspectJPointcutAdvisor，它是PointcutAdvisor的子类，因此执行以下的方法：
 			return canApply(pca.getPointcut(), targetClass, hasIntroductions);
 		}
 		else {
