@@ -57,7 +57,7 @@ import org.springframework.util.Assert;
  * 很明显它就是基于注解的AspectJ增强代理创建器。
  *
  * 从继承可以更清晰的看出它的层次结构，从这可以获得两个信息：
- * 实现了  ，可以做组件的 创建前后、初始化前后的后置处理工作 。
+ * 实现了  ，可以做组件的创建前后、初始化前后的后置处理工作 。
  * 实现了 BeanFactoryAware ，可以将 BeanFactory 注入到组件中
  */
 @SuppressWarnings("serial")

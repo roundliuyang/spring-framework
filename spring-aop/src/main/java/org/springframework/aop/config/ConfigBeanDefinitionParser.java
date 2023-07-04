@@ -120,7 +120,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				parseAdvisor(elt, parserContext);
 			}
 			else if (ASPECT.equals(localName)) {
-				// <aop:config>下的节点为<aop:aspect>，想见必然是执行第18行的代码parseAspect
+				// <aop:config>下的节点为<aop:aspect>，想见必然是执行如下的代码parseAspect
 				parseAspect(elt, parserContext);
 			}
 		}
@@ -491,6 +491,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 				pointcutBeanName = parserContext.getReaderContext().registerWithGeneratedName(pointcutDefinition);
 			}
 
+			// 向解析工具上下文中注册一个Pointcut组件定义
 			parserContext.registerComponent(
 					new PointcutComponentDefinition(pointcutBeanName, pointcutDefinition, expression));
 		}
@@ -499,6 +500,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 			this.parseState.pop();
 		}
 
+		// 这样一个流程下来，就解析了<aop:pointcut>标签中的内容并将之转换为RootBeanDefintion存储在Spring容器中。
 		return pointcutDefinition;
 	}
 
