@@ -292,6 +292,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	}
 
 	/**
+	 * bean 初始化后置处理方法
 	 * Create a proxy with the configured interceptors if the bean is
 	 * identified as one to proxy by the subclass.
 	 * @see #getAdvicesAndAdvisorsForBean
@@ -301,6 +302,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (bean != null) {
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
+				// 如果需要，为 bean 生成代理对象
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
 		}
@@ -338,7 +340,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @return a proxy wrapping the bean, or the raw bean instance as-is
 	 */
 	protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) {
-		// 一些不需要生成代理的场景判断
+		// 一些不需要生成代理的场景判断。
 		if (StringUtils.hasLength(beanName) && this.targetSourcedBeans.contains(beanName)) {
 			return bean;
 		}
@@ -357,9 +359,14 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// 判断只要Advisor数组不为空，那么就会通过以下的代码为<bean>创建代理
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
+			// 创建代理
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
+			/*
+			 * 返回代理对象，此时 IOC 容器输入 bean，得到 proxy。此时，
+			 * beanName 对应的 bean 是代理对象，而非原始的 bean
+			 */
 			return proxy;
 		}
 

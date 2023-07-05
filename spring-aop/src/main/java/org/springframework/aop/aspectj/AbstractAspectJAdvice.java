@@ -624,6 +624,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 			@Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable ex)
 			throws Throwable {
 
+		// 调用通知方法，并向其传递参数
 		return invokeAdviceMethodWithGivenArgs(argBinding(getJoinPoint(), jpMatch, returnValue, ex));
 	}
 

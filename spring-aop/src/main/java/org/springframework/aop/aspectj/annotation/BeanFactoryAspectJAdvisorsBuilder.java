@@ -75,6 +75,12 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 	/**
 	 * 构建所有 @Aspect 注解类的增强方法对应的 Advisor 对象。
+	 * 这里先对 buildAspectJAdvisors 方法的执行流程做个总结。如下：
+	 * 1、获取容器中所有 bean 的名称（beanName）
+	 * 2、遍历上一步获取到的 bean 名称数组，并获取当前 beanName 对应的 bean 类型（beanType）
+	 * 3、根据 beanType 判断当前 bean 是否是一个的 Aspect 注解类，若不是则不做任何处理
+	 * 4、调用 advisorFactory.getAdvisors 获取通知器
+	 *
 	 * Look for AspectJ-annotated aspect beans in the current bean factory,
 	 * and return to a list of Spring AOP Advisors representing them.
 	 * <p>Creates a Spring Advisor for each AspectJ advice method.
@@ -90,24 +96,29 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 				if (aspectNames == null) {
 					List<Advisor> advisors = new ArrayList<>();
 					aspectNames = new ArrayList<>();
+					// 从容器中获取所有 bean 的名称
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 							this.beanFactory, Object.class, true, false);
+					// 遍历 beanNames
 					for (String beanName : beanNames) {
 						if (!isEligibleBean(beanName)) {
 							continue;
 						}
 						// We must be careful not to instantiate beans eagerly as in this case they
 						// would be cached by the Spring container but would not have been weaved.
+						// 根据 beanName 获取 bean 的类型
 						Class<?> beanType = this.beanFactory.getType(beanName);
 						if (beanType == null) {
 							continue;
 						}
+						// 检测 beanType 是否包含 Aspect 注解
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 								MetadataAwareAspectInstanceFactory factory =
 										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
+								// 获取Advisors
 								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
 								if (this.beanFactory.isSingleton(beanName)) {
 									this.advisorsCache.put(beanName, classAdvisors);
