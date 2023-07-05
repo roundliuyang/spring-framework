@@ -196,9 +196,10 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			Object retVal;
 
-			// 如果配置了代理对象可以暴露，这里会允许在线程内共享这个代理对象
+			// 如果 expose-proxy 属性为 true，则暴露代理对象
 			if (this.advised.exposeProxy) {
 				// Make invocation available if necessary.
+				// 向 AopContext 中设置代理对象
 				oldProxy = AopContext.setCurrentProxy(proxy);
 				setProxyContext = true;
 			}
@@ -210,7 +211,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			// Get the interception chain for this method.
 			/**
-			 * 获取当前方法需要织入的切面逻辑的调用链
+			 * 获取适合当前方法的拦截器，即当前方法需要织入的切面逻辑的调用链
 			 * 获取AdvisedSupport中的所有拦截器和动态拦截器列表，用于拦截方法，具体到我们的实际代码，列表中有三个Object，分别是：
 			 * 	chain.get(0)：ExposeInvocationInterceptor，这是一个默认的拦截器，对应的原Advisor为DefaultPointcutAdvisor
 			 * 	chain.get(1)：MethodBeforeAdviceInterceptor，用于在实际方法调用之前的拦截，对应的原Advisor为AspectJMethodBeforeAdvice
@@ -233,14 +234,16 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			// proceed方法感兴趣的朋友可以去看一下，里面使用到了递归的思想对chain中的Object进行了层层的调用。
 			else {
 				// We need to create a method invocation...
-				// 5.1.2 获取目标对象的调用链逻辑，并且对该增强器链进行调用
+				// 创建一个方法调用器，并将拦截器链传入其中
 				MethodInvocation invocation =
 						new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
 				// Proceed to the joinpoint through the interceptor chain.
+				// 执行拦截器链
 				retVal = invocation.proceed();
 			}
 
 			// Massage return value if necessary.
+			// 获得方法返回值类型
 			Class<?> returnType = method.getReturnType();
 			// 如果返回值是目标对象本身，并且要执行的目标方法的返回值是代理对象的类型，则返回代理对象本身
 			// 简言之，如果返回值的类型是目标对象所属类，就把代理对象返回出去
