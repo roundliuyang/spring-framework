@@ -66,6 +66,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 			if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
 				return new JdkDynamicAopProxy(config);
 			}
+			// 创建 CGLIB 代理，ObjenesisCglibAopProxy 继承自 CglibAopProxy
 			return new ObjenesisCglibAopProxy(config);
 		}
 		else {
@@ -79,6 +80,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 			 * 	2.proxy-target-class="true"或者<bean>对象没有实现任何接口或者只实现了SpringProxy接口，返回Cglib2AopProxy
 			 * 当然，不管是JdkDynamicAopProxy还是Cglib2AopProxy，AdvisedSupport都是作为构造函数参数传入的，里面存储了具体的Advisor。
 			 */
+			// 创建 JDK 动态代理
 			return new JdkDynamicAopProxy(config);
 		}
 	}

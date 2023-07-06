@@ -42,6 +42,7 @@ public interface AopProxy {
 	Object getProxy();
 
 	/**
+	 * 创建代理对象
 	 * Create a new proxy object.
 	 * <p>Uses the given class loader (if necessary for proxy creation).
 	 * {@code null} will simply be passed down and thus lead to the low-level

@@ -465,15 +465,24 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.copyFrom(this);
 
+		/*
+		 * 默认配置下，或用户显式配置 proxy-target-class = "false" 时，
+		 * 这里的 proxyFactory.isProxyTargetClass() 也为 false
+		 */
 		if (!proxyFactory.isProxyTargetClass()) {
 			if (shouldProxyTargetClass(beanClass, beanName)) {
 				proxyFactory.setProxyTargetClass(true);
 			}
+			/*
+			 * 检测 beanClass 是否实现了接口，若未实现，则将
+			 * proxyFactory 的成员变量 proxyTargetClass 设为 true
+			 */
 			else {
 				evaluateProxyInterfaces(beanClass, proxyFactory);
 			}
 		}
 
+		// specificInterceptors 中若包含有 Advice，此处将 Advice 转为 Advisor
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		proxyFactory.addAdvisors(advisors);
 		proxyFactory.setTargetSource(targetSource);
@@ -484,6 +493,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			proxyFactory.setPreFiltered(true);
 		}
 
+		// 创建代理
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 
