@@ -347,14 +347,18 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
+		/*
+		 * 如果是基础设施类（Pointcut、Advice、Advisor 等接口的实现类），或是应该跳过的类，
+		 * 则不应该生成代理，此时直接返回 bean
+		 */
 		if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) {
+			// 将 <cacheKey, FALSE> 键值对放入缓存中，供上面的 if 分支使用
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
 		}
 
 		// Create proxy if we have advice.
-		// 首先我们要思考的第一个问题是：哪些目标对象需要生成代理？因为配置文件里面有很多Bean，肯定不能对每个Bean都生成代理，
-		// 因此需要一套规则判断Bean是不是需要生成代理，这套规则就是getAdvicesAndAdvisorsForBean
+		// 为目标 bean 查找合适的通知器
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		// 判断只要Advisor数组不为空，那么就会通过以下的代码为<bean>创建代理
 		if (specificInterceptors != DO_NOT_PROXY) {
