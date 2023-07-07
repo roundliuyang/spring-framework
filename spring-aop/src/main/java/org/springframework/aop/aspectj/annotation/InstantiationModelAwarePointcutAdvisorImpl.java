@@ -111,6 +111,7 @@ class InstantiationModelAwarePointcutAdvisorImpl
 			this.pointcut = this.declaredPointcut;
 			this.lazy = false;
 			// 按照注解解析 Advice
+			// 通知器 Advisor 是通知 Advice 的持有者，所以在 Advisor 实现类的构造方法中创建通知也是合适的。
 			this.instantiatedAdvice = instantiateAdvice(this.declaredPointcut);
 		}
 	}

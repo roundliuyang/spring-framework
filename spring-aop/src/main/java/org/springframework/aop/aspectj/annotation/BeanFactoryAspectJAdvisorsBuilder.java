@@ -111,7 +111,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (beanType == null) {
 							continue;
 						}
-						// 检测 beanType 是否包含 Aspect 注解
+						// 检测 beanType 是否包含 Aspect 注解(已经具体到含有Aspect注解喽)
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);

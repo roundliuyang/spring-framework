@@ -209,16 +209,17 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		if (expressionPointcut == null) {
 			return null;
 		}
-		// 创建 Advisor 实现类
+		// 创建 Advisor 实现类（包含一个隐藏步骤 – 创建 Advice）
 		return new InstantiationModelAwarePointcutAdvisorImpl(expressionPointcut, candidateAdviceMethod,
 				this, aspectInstanceFactory, declarationOrderInAspect, aspectName);
 	}
 
 	@Nullable
 	private AspectJExpressionPointcut getPointcut(Method candidateAdviceMethod, Class<?> candidateAspectClass) {
-		// 获取方法上的 AspectJ 相关注解，包括 @Before，@After 等
+		// 获取方法上的 AspectJ 相关注解，包括 @Before，@After 等。这不废话吗？不获取这获取啥！
 		AspectJAnnotation<?> aspectJAnnotation =
 				AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(candidateAdviceMethod);
+		// 方法没有相关注解，直接返回null
 		if (aspectJAnnotation == null) {
 			return null;
 		}
