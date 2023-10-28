@@ -24,6 +24,7 @@ import org.springframework.aop.Pointcut;
 import org.springframework.util.Assert;
 
 /**
+ * 组合模式
  * Convenient class for building up pointcuts.
  *
  * <p>All methods return {@code ComposablePointcut}, so we can use concise idioms
