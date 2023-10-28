@@ -159,6 +159,10 @@ import org.springframework.core.Ordered;
 public @interface EnableTransactionManagement {
 
 	/**
+	 * 这个就决定了是用JDK代理还是CGLIB代理
+	 * false就是使用JDK代理，针对接口代理
+	 * true就是直接针对实现类代理
+	 *
 	 * Indicate whether subclass-based (CGLIB) proxies are to be created ({@code true}) as
 	 * opposed to standard Java interface-based proxies ({@code false}). The default is
 	 * {@code false}. <strong>Applicable only if {@link #mode()} is set to

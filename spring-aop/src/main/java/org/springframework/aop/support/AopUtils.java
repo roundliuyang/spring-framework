@@ -252,6 +252,7 @@ public abstract class AopUtils {
 		for (Class<?> clazz : classes) {
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
 			for (Method method : methods) {
+				// 通过matches()方法判断目标类中的每一个方法，TransactionAttributeSourcePointcut调用matches()方法，其实就是判断当前方法有没有被Transactional注解。只要有一个方法被Transactional注解，就直接返回true
 				if (introductionAwareMethodMatcher != null ?
 						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions) :
 						methodMatcher.matches(method, targetClass)) {
@@ -291,7 +292,7 @@ public abstract class AopUtils {
 		}
 		else if (advisor instanceof PointcutAdvisor) {
 			PointcutAdvisor pca = (PointcutAdvisor) advisor;
-			// 第一个参数advisor的实际类型是AspectJPointcutAdvisor，它是PointcutAdvisor的子类，因此执行以下的方法：
+			// BeanFactoryTransactionAttributeSourceAdvisor通过getPointcut()方法获取TransactionAttributeSourcePointcut实例
 			return canApply(pca.getPointcut(), targetClass, hasIntroductions);
 		}
 		else {
@@ -324,6 +325,7 @@ public abstract class AopUtils {
 				// already processed
 				continue;
 			}
+			// 看这里，主要是通过这里来判断。只要目标class或者任何的method被Transactional注解，就返回true
 			if (canApply(candidate, clazz, hasIntroductions)) {
 				eligibleAdvisors.add(candidate);
 			}
