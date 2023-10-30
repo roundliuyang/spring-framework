@@ -249,7 +249,6 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 * 其实，这个过程并没有真正创建 Bean 对象，仅仅只是做了一部分准备和预处理步骤。真正获取单例 bean 的方法，其实是由 <3> 处的 singletonFactory.getObject() 这部分代码块来实现，
 	 * 而 singletonFactory 由回调方法产生。
-	 * 那么这个方法做了哪些准备呢？
 	 *
 	 * Return the (raw) singleton object registered under the given name,
 	 * creating and registering a new one if none registered yet.
