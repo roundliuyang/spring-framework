@@ -12,10 +12,10 @@ public class GpImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
 										BeanDefinitionRegistry registry) {
 
-		DefineFactoryBean factoryBean=new DefineFactoryBean();
-		BeanDefinitionBuilder definition= BeanDefinitionBuilder.genericBeanDefinition(
-				IHelloService.class,()-> factoryBean.getObject());
-		BeanDefinition beanDefinition=definition.getBeanDefinition();
-		registry.registerBeanDefinition("helloService",beanDefinition);
+		DefineFactoryBean factoryBean = new DefineFactoryBean();
+		BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(
+				IHelloService.class, () -> factoryBean.getObject());
+		BeanDefinition beanDefinition = definition.getBeanDefinition();
+		registry.registerBeanDefinition("helloService", beanDefinition);
 	}
 }

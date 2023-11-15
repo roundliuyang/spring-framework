@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class TestMain {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext=new AnnotationConfigApplicationContext(TestMain.class);
-		IHelloService is=applicationContext.getBean(IHelloService.class);
-//		System.out.println(is.say());
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestMain.class);
+		IHelloService is = applicationContext.getBean(IHelloService.class);
+		System.out.println(is.say());
 	}
 }
