@@ -19,6 +19,8 @@ package org.springframework.beans.factory;
 import org.springframework.lang.Nullable;
 
 /**
+ * 首先，需要注意的是FactoryBean和BeanFactory是不一样的，FactoryBean是一个工厂Bean，可以生成某一个类型Bean实例，
+ * 它最大的一个作用是：可以让我们自定义Bean的创建过程。
  * Interface to be implemented by objects used within a {@link BeanFactory} which
  * are themselves factories for individual objects. If a bean implements this
  * interface, it is used as a factory for an object to expose, not directly as a
