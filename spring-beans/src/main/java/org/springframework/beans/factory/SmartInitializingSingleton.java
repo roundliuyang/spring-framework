@@ -44,6 +44,8 @@ package org.springframework.beans.factory;
 public interface SmartInitializingSingleton {
 
 	/**
+	 * 在spring容器管理的所有单例对象（非懒加载对象）初始化完成之后调用的回调接口
+	 *
 	 * Invoked right at the end of the singleton pre-instantiation phase,
 	 * with a guarantee that all regular singleton beans have been created
 	 * already. {@link ListableBeanFactory#getBeansOfType} calls within

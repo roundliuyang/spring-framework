@@ -176,7 +176,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * 从这段代码我们可以看出，singletonFactories 这个三级缓存才是解决 Spring Bean 循环依赖的诀窍所在。
-	 * 同时这段代码发生在 #createBeanInstance(...) 方法之后，也就是说这个 bean 其实已经被创建出来了，但是它还不是很完美（没有进行属性填充和初始化），但是对于其他依赖它的对象而言已经足够了（可以根据对象引用定位到堆中对象），能够被认出来了。所以 Spring 在这个时候，选择将该对象提前曝光出来让大家认识认识。
+	 * 同时这段代码发生在 #createBeanInstance(...) 方法之后，也就是说这个 bean 其实已经被创建出来了，但是它还不是很完美（没有进行属性填充和初始化），
+	 * 但是对于其他依赖它的对象而言已经足够了（可以根据对象引用定位到堆中对象），能够被认出来了。所以 Spring 在这个时候，选择将该对象提前曝光出来让大家认识认识。
 	 * Add the given singleton factory for building the specified singleton
 	 * if necessary.
 	 * <p>To be called for eager registration of singletons, e.g. to be able to
@@ -218,7 +219,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		// 从单例缓冲中加载 bean
 		Object singletonObject = this.singletonObjects.get(beanName);
 		// 缓存中的 bean 为空，且当前 bean 正在创建
-		// #isSingletonCurrentlyInCreation(String beanName) 方法：判断当前 singleton bean 是否处于创建中。bean 处于创建中，也就是说 bean 在初始化但是没有完成初始化，有一个这样的过程其实和 Spring 解决 bean 循环依赖的理念相辅相成。因为 Spring 解决 singleton bean 的核心就在于提前曝光 bean 。
+		// #isSingletonCurrentlyInCreation(String beanName) 方法：判断当前 singleton bean 是否处于创建中。bean 处于创建中，
+		// 也就是说 bean 在初始化但是没有完成初始化，有一个这样的过程其实和 Spring 解决 bean 循环依赖的理念相辅相成。
+		// 因为 Spring 解决 singleton bean 的核心就在于提前曝光 bean 。
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			// 加锁
 			synchronized (this.singletonObjects) {
