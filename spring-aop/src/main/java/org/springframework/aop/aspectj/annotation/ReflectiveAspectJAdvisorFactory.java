@@ -141,6 +141,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 			}
 		}
 
+		// 寻找的增强器不为空并且配置了增强器延迟初始化
 		// If it's a per target aspect, emit the dummy instantiating aspect.
 		if (!advisors.isEmpty() && lazySingletonAspectInstanceFactory.getAspectMetadata().isLazilyInstantiated()) {
 			Advisor instantiationAdvisor = new SyntheticInstantiationAdvisor(lazySingletonAspectInstanceFactory);
@@ -214,6 +215,12 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 				this, aspectInstanceFactory, declarationOrderInAspect, aspectName);
 	}
 
+	/**
+	 * 切点信息的获取。就是获取指定注解的表达式信息，如@Before(“test()”)
+	 * @param candidateAdviceMethod  没有标注为@Pointcut的方法
+	 * @param candidateAspectClass AspectJ的类
+	 * @return 切点信息(方法、表达式、beanFactory等信息)
+	 */
 	@Nullable
 	private AspectJExpressionPointcut getPointcut(Method candidateAdviceMethod, Class<?> candidateAspectClass) {
 		// 获取方法上的 AspectJ 相关注解，包括 @Before，@After 等。这不废话吗？不获取这获取啥！

@@ -155,11 +155,12 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 
 	/**
-	 * 源码中前面的一组if-else if中出现了一个很陌生的概念：DecoratingProxy 。为了研究它，我们要先回到上一篇的最后部分，来看看 getProxy 方法还有什么名堂。
-	 *
-	 * Implementation of {@code InvocationHandler.invoke}.
-	 * <p>Callers will see exactly the exception thrown by the target,
-	 * unless a hook method throws an exception.
+	 * JDK动态代理执行器
+	 * @param proxy  代理对象
+	 * @param method 方法
+	 * @param args   参数
+	 * @return 返回结果
+	 * @throws Throwable 异常
 	 */
 	@Override
 	@Nullable
@@ -171,11 +172,13 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		Object target = null;
 
 		try {
+			// "equals"方法的处理
 			if (!this.equalsDefined && AopUtils.isEqualsMethod(method)) {
 				// The target does not implement the equals(Object) method itself.
 				// 不代理目标对象的equals(Object)方法
 				return equals(args[0]);
 			}
+			// "hashCode"方法的处理
 			else if (!this.hashCodeDefined && AopUtils.isHashCodeMethod(method)) {
 				// The target does not implement the hashCode() method itself.
 				// 不代理目标对象的hashCode()方法
@@ -196,7 +199,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			Object retVal;
 
-			// 如果 expose-proxy 属性为 true，则暴露代理对象
+			// 有时候目标对象内部的自我调用将无法实施切面中的增强则需要通过此属性暴露代理 
 			if (this.advised.exposeProxy) {
 				// Make invocation available if necessary.
 				// 向 AopContext 中设置代理对象

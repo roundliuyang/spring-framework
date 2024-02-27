@@ -97,6 +97,13 @@ public abstract class AopConfigUtils {
 		return registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry, null);
 	}
 
+	
+	/**
+	 * 注册AnnotationAwareAspectJAutoProxyCreator
+	 * @param registry 注册的BeanDefinition
+	 * @param source 源配置元素
+	 * @return BeanDefinition
+	 */
 	@Nullable
 	public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
@@ -104,6 +111,10 @@ public abstract class AopConfigUtils {
 		return registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class, registry, source);
 	}
 
+	/**
+	 * 强制proxy-target-class。其实是属性值设置的过程
+	 * @param registry BeanDefinitionRegistry
+	 */
 	public static void forceAutoProxyCreatorToUseClassProxying(BeanDefinitionRegistry registry) {
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
@@ -111,6 +122,10 @@ public abstract class AopConfigUtils {
 		}
 	}
 
+	/**
+	 * 强制expose-proxy。其实是属性值设置的过程
+	 * @param registry BeanDefinitionRegistry
+	 */
 	public static void forceAutoProxyCreatorToExposeProxy(BeanDefinitionRegistry registry) {
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
@@ -121,6 +136,10 @@ public abstract class AopConfigUtils {
 	/**
 	 * 下面的方法就是创建 AnnotationAwareAspectJAutoProxyCreator 的核心方法，可以发现逻辑还是比较简单的。
 	 * 方法进入后先判断IOC容器中是否包含一个特定的Bean，如果没有，下面直接用 RootBeanDefinition 创建。
+	 * @param cls InfrastructureAdvisorAutoProxyCreator、AspectJAwareAdvisorAutoProxyCreator、AnnotationAwareAspectJAutoProxyCreator
+	 * @param registry 注册的BeanDefinition   
+	 * @param source 原始的配置
+	 * @return BeanDefinition            
 	 */
 	@Nullable
 	private static BeanDefinition registerOrEscalateApcAsRequired(
@@ -128,9 +147,11 @@ public abstract class AopConfigUtils {
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 
+		// 如果已经存在了自动代理创建器
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
+				// 根据优先级来判断使用哪个
 				int currentPriority = findPriorityForClass(apcDefinition.getBeanClassName());
 				int requiredPriority = findPriorityForClass(cls);
 				if (currentPriority < requiredPriority) {
@@ -140,6 +161,7 @@ public abstract class AopConfigUtils {
 			return null;
 		}
 
+		// 不存在, 则创建RootBeanDefinition并注册
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
 		beanDefinition.setSource(source);
 		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);

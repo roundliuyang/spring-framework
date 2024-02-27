@@ -84,6 +84,10 @@ dependencies {
 	testRuntime("org.glassfish:javax.el:3.0.1-b08")
 	testRuntime("com.sun.xml.bind:jaxb-core:2.3.0")
 	testRuntime("com.sun.xml.bind:jaxb-impl:2.3.0")
+
+	// AspectJ 相关依赖
+	implementation 'org.aspectj:aspectjrt:1.9.7' // AspectJ 运行时库
+	implementation 'org.aspectj:aspectjweaver:1.9.7' // AspectJ 织入器
 }
 
 task testNG(type: Test) {

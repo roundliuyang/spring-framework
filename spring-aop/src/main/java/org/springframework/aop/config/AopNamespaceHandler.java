@@ -63,6 +63,9 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class AopNamespaceHandler extends NamespaceHandlerSupport {
 
 	/**
+	 * 注册解析器(BeanDefinitionParser), 针对'config'、'spring-configured'、'aspectj-autoproxy'和'scoped-proxy'标签的解析器
+	 * 在解析配置文件的时候，一旦遇到aspectj-autoproxy注解时就会使用解析器AspectJAutoProxyBeanDefinitionParser进行解析，
+	 * 那么我们进入AspectJAutoProxyBeanDefinitionParser，查看其内部实现。
 	 * Register the {@link BeanDefinitionParser BeanDefinitionParsers} for the
 	 * '{@code config}', '{@code spring-configured}', '{@code aspectj-autoproxy}'
 	 * and '{@code scoped-proxy}' tags.

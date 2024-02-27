@@ -89,18 +89,21 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 	 */
 	public List<Advisor> buildAspectJAdvisors() {
 		List<String> aspectNames = this.aspectBeanNames;
-
+		
+		// 双重锁检查并获取切面的beanName
 		if (aspectNames == null) {
-			synchronized (this) {
-				aspectNames = this.aspectBeanNames;
+			synchronized (this) {          // 对当前对象加锁
+				aspectNames = this.aspectBeanNames;    //再次赋值
 				if (aspectNames == null) {
 					List<Advisor> advisors = new ArrayList<>();
 					aspectNames = new ArrayList<>();
 					// 从容器中获取所有 bean 的名称
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 							this.beanFactory, Object.class, true, false);
-					// 遍历 beanNames
+					
+					// 循环所有的beanName找出对应的增强方法 Start
 					for (String beanName : beanNames) {
+						// 不合格的直接过滤 Start
 						if (!isEligibleBean(beanName)) {
 							continue;
 						}
@@ -111,14 +114,15 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (beanType == null) {
 							continue;
 						}
-						// 检测 beanType 是否包含 Aspect 注解(已经具体到含有Aspect注解喽)
+						// 判断是否有@Aspect注解并且不是原生的AspectJ
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
-							AspectMetadata amd = new AspectMetadata(beanType, beanName);
-							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
+							AspectMetadata amd = new AspectMetadata(beanType, beanName);         //元数据
+							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {     //单例
 								MetadataAwareAspectInstanceFactory factory =
 										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
-								// 获取Advisors
+								
+								// 解析标记了AspectJ的方法
 								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
 								if (this.beanFactory.isSingleton(beanName)) {
 									this.advisorsCache.put(beanName, classAdvisors);
@@ -128,8 +132,9 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 								}
 								advisors.addAll(classAdvisors);
 							}
-							else {
+							else {     // 非单例
 								// Per target or per this.
+								// 如果这个beanName是单例的话, 就报错了 Start
 								if (this.beanFactory.isSingleton(beanName)) {
 									throw new IllegalArgumentException("Bean with name '" + beanName +
 											"' is a singleton, but aspect instantiation model is not singleton");
@@ -150,6 +155,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 		if (aspectNames.isEmpty()) {
 			return Collections.emptyList();
 		}
+		// 从缓存中获取并返回 
 		List<Advisor> advisors = new ArrayList<>();
 		for (String aspectName : aspectNames) {
 			List<Advisor> cachedAdvisors = this.advisorsCache.get(aspectName);
