@@ -948,7 +948,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * 例如说，AOP 就是在这里动态织入，创建其代理 Bean 返回
 	 * 这里会创建早期初始化 Bean 可能存在的 AOP 代理等等
 	 *
-	 * 这也是为什么 Spring 需要额外增加 singletonFactories 三级缓存的原因，解决 Spring 循环依赖情况下的 Bean 存在动态代理等情况，不然循环注入到别人的 Bean 就是原始的，而不是经过动态代理的！
+	 * 这也是为什么 Spring 需要额外增加 singletonFactories 三级缓存的原因，解决 Spring 循环依赖情况下的 Bean 存在动态代理等情况，
+	 * 不然循环注入到别人的 Bean 就是原始的，而不是经过动态代理的！
 	 * 另外，这里在推荐一篇《Spring循环依赖三级缓存是否可以减少为二级缓存？》文章，解释的也非常不错。
 	 *
 	 * Obtain a reference for early access to the specified bean,
