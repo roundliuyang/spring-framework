@@ -64,7 +64,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 		return new AnnotationTransactionAttributeSource();
 	}
 
-	// TransactionInterceptor创建出来，也是要设置进BeanFactoryTransactionAttributeSourceAdvisor，所以中点还是在上面
+	// TransactionInterceptor创建出来，也是要设置进BeanFactoryTransactionAttributeSourceAdvisor，所以重点还是在上面
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionInterceptor transactionInterceptor() {

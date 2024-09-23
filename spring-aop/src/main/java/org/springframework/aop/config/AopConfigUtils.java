@@ -112,7 +112,6 @@ public abstract class AopConfigUtils {
 	}
 
 	/**
-	 * 强制proxy-target-class。其实是属性值设置的过程
 	 * @param registry BeanDefinitionRegistry
 	 */
 	public static void forceAutoProxyCreatorToUseClassProxying(BeanDefinitionRegistry registry) {

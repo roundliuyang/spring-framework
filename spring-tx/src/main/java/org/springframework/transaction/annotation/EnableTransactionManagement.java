@@ -154,7 +154,7 @@ import org.springframework.core.Ordered;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-// 咱已经很清楚， ImportSelector 的作用是筛选组件，返回组件的全限定类名，让IOC容器来创建这些组件。
+// ImportSelector 的作用是筛选组件，返回组件的全限定类名，让IOC容器来创建这些组件。
 @Import(TransactionManagementConfigurationSelector.class)
 public @interface EnableTransactionManagement {
 

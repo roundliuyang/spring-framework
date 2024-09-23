@@ -154,6 +154,7 @@ public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute i
 		// User superclass behavior (rollback on unchecked) if no rule matches.
 		if (winner == null) {
 			logger.trace("No relevant rollback rule found: applying default rules");
+			// 调用父类 DefaultTransactionAttribute 的方法
 			return super.rollbackOn(ex);
 		}
 
