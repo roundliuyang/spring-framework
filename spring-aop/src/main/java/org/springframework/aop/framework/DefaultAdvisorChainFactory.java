@@ -58,7 +58,6 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 
 		// This is somewhat tricky... We have to process introductions first,
 		// but we need to preserve order in the ultimate list.
-		// 增强器适配器注册器，它会根据增强器来解析，返回拦截器数组
 		List<Object> interceptorList = new ArrayList<Object>(config.getAdvisors().length);
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
 		boolean hasIntroductions = hasMatchingIntroductions(config, actualClass);
@@ -71,8 +70,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 				// Add it conditionally.  就是在@Aspect标注的切面类中声明的那些通知方法的封装
 				PointcutAdvisor pointcutAdvisor = (PointcutAdvisor) advisor;
 				/*
-				 * 调用 ClassFilter 对 bean 类型进行匹配，无法匹配则说明当前通知器
-				 * 不适合应用在当前 bean 上
+				 * 调用 ClassFilter 对 bean 类型进行匹配，无法匹配则说明当前通知器不适合应用在当前 bean 上
 				 */
 				if (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
 					MethodMatcher mm = pointcutAdvisor.getPointcut().getMethodMatcher();
