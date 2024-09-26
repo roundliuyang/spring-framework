@@ -51,7 +51,8 @@ public class AppConfig {
         context.register(AppConfig.class,
                 StudentService.class);
         context.refresh();
-        StudentService studentService = context.getBean(StudentService.class);
+//        StudentService studentService = context.getBean(StudentService.class);    // cglib 代理
+        IStudentService studentService = context.getBean(IStudentService.class);   // jdk代理
         studentService.saveStudent("xiaoMing");
     }
 

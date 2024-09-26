@@ -176,6 +176,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
 			// Evaluate dynamic method matcher here: static part will already have
 			// been evaluated and found to match.
+			// 这里对拦截器进行动态匹配判断，这里是触发匹配的地方，如果和定义的PointCut匹配，那么这个Advice被执行
 			InterceptorAndDynamicMethodMatcher dm =
 					(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
 			if (dm.methodMatcher.matches(this.method, this.targetClass, this.arguments)) {
@@ -183,7 +184,8 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 				return dm.interceptor.invoke(this);
 			}
 			else {
-				// 如果匹配失败，则忽略当前的拦截器
+				// 如果不匹配，递归调用proceed()方法，直到所有的拦截器都被运行过为止。
+				// 上面代码invokeJoinpoint的if条件上对拦截器执行做了判断，如果拦截器都执行完，就执行目标方法
 				// Dynamic matching failed.
 				// Skip this interceptor and invoke the next in the chain.
 				return proceed();
@@ -192,7 +194,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
-			// 调用拦截器逻辑，并传递 ReflectiveMethodInvocation 对象
+			// 如果是interceptor直接调用interceptor的方法
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}

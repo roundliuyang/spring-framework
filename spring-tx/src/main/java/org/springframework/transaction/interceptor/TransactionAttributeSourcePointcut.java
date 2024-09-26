@@ -34,8 +34,8 @@ import org.springframework.util.ObjectUtils;
 abstract class TransactionAttributeSourcePointcut extends StaticMethodMatcherPointcut implements Serializable {
 
 	/**
-	 * matches 方法有两部分判断逻辑：是否为 TransactionalProxy 、PlatformTransactionManager、PersistenceExceptionTranslator 的实现类，
-	 * 以及让 TransactionAttributeSource 获取事务属性看是否为空。前半部分好理解，后半部分需要借助 TransactionAttributeSource 来判断，正好配置类中事务增强器的下边就要创建一个 AnnotationTransactionAttributeSource ，那咱就继续往下看。
+	 * matches 方法有两部分判断逻辑：是否为 TransactionalProxy，
+	 * 以及让 TransactionAttributeSource 获取事务属性看是否为空。前半部分好理解，后半部分需要借助 TransactionAttributeSource 来判断
 	 */
 	@Override
 	public boolean matches(Method method, @Nullable Class<?> targetClass) {
